@@ -30,6 +30,21 @@ const FlightsPage = () => {
     fetchFlights(); // Fetch flights with current search criteria
   };
 
+  const handleBookFlight = (flight) => {
+    // Send the booking information to the backend
+    axios.post('http://localhost:3001/api/bookings', {
+      bookedName: flight.name,
+      bookedDeparture: flight.departure,
+      bookedDestination: flight.destination,
+      bookedPrice: flight.price,
+    })
+    .then(() => {
+      // Remove the booked flight from the displayed list
+      setFlights(flights.filter(f => f._id !== flight._id));
+    })
+    .catch(error => console.error("There was an error booking the flight!", error));
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-semibold mb-6">Available Flights</h1>
@@ -76,7 +91,7 @@ const FlightsPage = () => {
                 </div>
               </div>
               <button 
-                onClick={() => console.log('clicked')} 
+                onClick={() => handleBookFlight(flight)} 
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
               >
                 Book Flight
