@@ -1,37 +1,34 @@
-const mongoose = require('mongoose');
-const Flight = require('./models/Flight'); // Adjust this path if necessary
+const Flight = require('./models/Flight'); // Assuming your flight model is in models/Flight.js
 
-async function seedDatabase() {
+const seedFlights = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/flights', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('Connected to MongoDB.');
+    // Check if there are any flights already in the database
+    const flightCount = await Flight.countDocuments();
 
-    const sampleFlights = [
-      { name: 'Flight A', departure: 'New York', destination: 'Los Angeles', price: 300 },
-      { name: 'Flight B', departure: 'Chicago', destination: 'Miami', price: 150 },
-      { name: 'Flight C', departure: 'Dallas', destination: 'San Francisco', price: 220 },
-      { name: 'Flight D', departure: 'Atlanta', destination: 'Seattle', price: 180 },
-      { name: 'Flight E', departure: 'Boston', destination: 'Orlando', price: 170 },
-      { name: 'Flight F', departure: 'Houston', destination: 'Las Vegas', price: 250 },
-      { name: 'Flight G', departure: 'Denver', destination: 'Phoenix', price: 200 },
-      { name: 'Flight H', departure: 'Detroit', destination: 'Philadelphia', price: 160 },
-      { name: 'Flight I', departure: 'Minneapolis', destination: 'Washington D.C.', price: 210 },
-      { name: 'Flight J', departure: 'San Diego', destination: 'Portland', price: 230 },
-    ];
+    if (flightCount === 0) {
+      // If no flights, insert 10 sample flights
+      const sampleFlights = [
+        { name: 'Flight A', departure: 'New York', destination: 'London', price: 500 },
+        { name: 'Flight B', departure: 'Los Angeles', destination: 'Paris', price: 600 },
+        { name: 'Flight C', departure: 'Chicago', destination: 'Tokyo', price: 700 },
+        { name: 'Flight D', departure: 'Houston', destination: 'Dubai', price: 800 },
+        { name: 'Flight E', departure: 'San Francisco', destination: 'Berlin', price: 550 },
+        { name: 'Flight F', departure: 'Miami', destination: 'Barcelona', price: 650 },
+        { name: 'Flight G', departure: 'Seattle', destination: 'Rome', price: 750 },
+        { name: 'Flight H', departure: 'Dallas', destination: 'Madrid', price: 850 },
+        { name: 'Flight I', departure: 'Boston', destination: 'Amsterdam', price: 450 },
+        { name: 'Flight J', departure: 'Washington DC', destination: 'London', price: 500 },
+      ];
 
-    // Use `insertMany` with { ordered: false } to continue on duplicates
-    await Flight.insertMany(sampleFlights, { ordered: false });
-    console.log('Sample flights inserted successfully!');
+      // Insert the sample flights into the database
+      await Flight.insertMany(sampleFlights);
+      console.log('Sample flights added to the database!');
+    } else {
+      console.log('Flights already exist in the database.');
+    }
   } catch (error) {
-    // Check for specific error type or message if possible
-    console.error('Error inserting sample flights:', error);
-  } finally {
-    mongoose.connection.close();
-    console.log('Database connection closed.');
+    console.error('Error seeding flights:', error);
   }
-}
+};
 
-seedDatabase();
+module.exports = seedFlights;

@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const flightRoutes = require('./routes/flightroutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const seedFlights = require('./seedFlights'); // Import the seed file
 
 const app = express();
-const PORT = process.env.PORT || 3001 || 5000;
+const PORT = process.env.PORT || 3001;  // Fix the PORT assignment
 
 // Suppress Mongoose deprecation warning
 mongoose.set('strictQuery', false);
@@ -20,8 +21,15 @@ app.use('/api/bookings', bookingRoutes);
 
 // MongoDB Connection
 mongoose.connect('mongodb://mongodb:27017/flightbooking', { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('Error connecting to MongoDB:', err));
+  .then(() => {
+    console.log('Connected to MongoDB');
+
+    // Call the seed function to add flight data to the database if not already present
+    seedFlights(); // This will insert the flight data
+  })
+  .catch(err => {
+    console.error('Error connecting to MongoDB:', err);
+  });
 
 // Start server
 app.listen(PORT, () => {
