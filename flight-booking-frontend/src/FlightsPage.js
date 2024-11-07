@@ -32,7 +32,7 @@ const FlightsPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold mb-6">Available Flights bar</h1>
+      <h1 className="text-3xl font-semibold mb-6">Available Flights</h1>
 
       {/* Search Form */}
       <form onSubmit={handleSearch} className="mb-4">
@@ -71,7 +71,9 @@ const FlightsPage = () => {
               <div>
                 <h3 className="text-xl font-semibold">{flight.name}</h3>
                 <p className="text-gray-600">{flight.departure} to {flight.destination}</p>
-                <p className="text-gray-800">${flight.price}</p>
+                <div className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md inline-block mt-2">
+                  ${flight.price}
+                </div>
               </div>
               <button 
                 onClick={() => console.log('clicked')} 
