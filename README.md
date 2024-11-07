@@ -38,7 +38,6 @@ First, install the dependencies for both the frontend and the backend.
 Navigate to the backend directory and run:
 
 ```bash
-cd backend
 npm install
 ```
 
@@ -46,7 +45,6 @@ npm install
 Navigate to the frontend directory and run:
 
 ```bash
-cd frontend
 npm install
 ```
 
