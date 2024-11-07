@@ -32,4 +32,24 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Cancel a booking
+router.delete('/cancel/:flightName', async (req, res) => {
+  try {
+    const flightName = req.params.flightName; // Get the flight name from the URL parameter
+
+    // Find and delete the booking with the matching flight name
+    const canceledBooking = await Booking.findOneAndDelete({ bookedName: flightName });
+
+    if (!canceledBooking) {
+      return res.status(404).json({ message: 'Booking not found' });
+    }
+
+    // Respond with success message
+    res.status(200).json({ message: 'Booking canceled successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error canceling the booking' });
+  }
+});
+
 module.exports = router;
