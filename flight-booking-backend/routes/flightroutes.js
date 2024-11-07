@@ -1,27 +1,28 @@
-// routes/flightroutes.js
+// routes/flightRoutes.js
 
 const express = require('express');
 const router = express.Router();
-const Flight = require('../models/Flight'); // Import the Flight model
+const Flight = require('../models/Flight');
+const Booking = require('../models/Booking');
 
-// Endpoint for getting flights, with search functionality
+// Fetch available flights, excluding those that are already booked
 router.get('/', async (req, res) => {
   try {
-    // Extract query parameters
-    const { name, departure, destination } = req.query;
+    // Fetch all booked flight names
+    const bookedFlights = await Booking.find().select('bookedName'); // Get only the flight names
 
-    // Build a filter object based on provided query parameters
-    const filter = {};
-    if (name) filter.name = new RegExp(name, 'i');           // Case-insensitive regex for partial match
-    if (departure) filter.departure = new RegExp(departure, 'i');
-    if (destination) filter.destination = new RegExp(destination, 'i');
+    // Extract the names of the booked flights
+    const bookedFlightNames = bookedFlights.map(booking => booking.bookedName);
 
-    // Fetch flights based on the filter
-    const flights = await Flight.find(filter);
-    res.status(200).json(flights); // Send flights as JSON
+    // Find all available flights (exclude those that are booked)
+    const availableFlights = await Flight.find({
+      name: { $nin: bookedFlightNames }  // Exclude flights already booked
+    });
+
+    res.json(availableFlights);
   } catch (error) {
-    console.error('Error fetching flights:', error);
-    res.status(500).json({ error: 'Error fetching flights' });
+    console.error("There was an error fetching available flights:", error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
