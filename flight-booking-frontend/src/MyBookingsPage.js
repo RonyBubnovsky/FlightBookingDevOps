@@ -8,7 +8,7 @@ const MyBookingsPage = () => {
 
   // Fetch booked flights from the backend
   useEffect(() => {
-    axios.get('http://localhost:3000/api/bookings')
+    axios.get('http://localhost:3001/api/bookings')
       .then(response => setBookedFlights(response.data))
       .catch(error => console.error("There was an error fetching bookings!", error));
   }, []);

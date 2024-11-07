@@ -8,14 +8,14 @@ const FlightsPage = () => {
 
   // Fetch available flights from the backend
   useEffect(() => {
-    axios.get('http://localhost:3000/api/flights')
+    axios.get('http://localhost:3001/api/flights')
       .then(response => setFlights(response.data))
       .catch(error => console.error("There was an error fetching flights!", error));
   }, []);
 
   const handleBooking = (flight) => {
     // Send flight's name instead of flightId
-    axios.post('http://localhost:3000/api/bookings', { flightName: flight.name })
+    axios.post('http://localhost:3001/api/bookings', { flightName: flight.name })
       .then(response => {
         alert("Flight booked successfully!");
         // Remove the booked flight from the available flights list

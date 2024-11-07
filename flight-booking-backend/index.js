@@ -5,7 +5,7 @@ const flightRoutes = require('./routes/flightroutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 3000 || 5000;
+const PORT = process.env.PORT || 3001 || 5000;
 
 // Suppress Mongoose deprecation warning
 mongoose.set('strictQuery', false);
