@@ -2,8 +2,8 @@
 const mongoose = require('mongoose');
 
 const bookingSchema = new mongoose.Schema({
-  flightId: { type: mongoose.Schema.Types.ObjectId, ref: 'Flight' },
-  user: String,
+  flightName: String,  // Store the flight name
+  // Add other fields for booking (e.g., user information, date, etc.)
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);

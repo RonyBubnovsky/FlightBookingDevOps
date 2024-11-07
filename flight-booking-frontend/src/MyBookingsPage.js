@@ -12,20 +12,20 @@ const MyBookingsPage = () => {
       .then(response => setBookedFlights(response.data))
       .catch(error => console.error("There was an error fetching bookings!", error));
   }, []);
-  
+
   return (
     <div>
-      <h1>My Booked Flights</h1>
+      <h1 className="text-3xl font-semibold mb-6">My Booked Flights</h1>
       <div>
         {bookedFlights.length > 0 ? (
           bookedFlights.map(flight => (
-            <div key={flight._id} className="booked-flight-item">
-              <h3>{flight.name}</h3>
-              <p>{flight.departure} to {flight.destination}</p>
+            <div key={flight._id} className="bg-white p-4 rounded-lg shadow-lg mb-4">
+              <h3 className="text-xl font-semibold">{flight.flightId.name}</h3>
+              <p className="text-gray-600">{flight.flightId.departure} to {flight.flightId.destination}</p>
             </div>
           ))
         ) : (
-          <p>You have no bookings yet.</p>
+          <p className="text-gray-600">You have no bookings yet.</p>
         )}
       </div>
     </div>

@@ -1,34 +1,63 @@
 // routes/bookingRoutes.js
+
 const express = require('express');
-const Booking = require('../models/Booking');
-const Flight = require('../models/Flight');
 const router = express.Router();
+const Flight = require('../models/Flight');
+const Booking = require('../models/Booking');
 
-// Book a flight
-router.post('/bookings', async (req, res) => {
-  const { flightId } = req.body;
+// POST request to create a new booking and remove the flight from available flights
+router.post('/', async (req, res) => {
+  const { flightName } = req.body;
+
   try {
-    const flight = await Flight.findById(flightId);
-    if (!flight) return res.status(404).json({ message: 'Flight not found' });
+    // Find the flight by its name
+    const flight = await Flight.findOne({ name: flightName });
+    
+    if (!flight) {
+      return res.status(404).json({ error: 'Flight not found' });
+    }
 
-    const booking = new Booking({
-      flightId: flight._id,
-      user: 'test-user', // Replace with actual user from session or auth
+    // Create a new booking
+    const newBooking = new Booking({
+      flightName: flight.name,
+      departure: flight.departure,
+      destination: flight.destination,
+      price: flight.price,
     });
-    await booking.save();
-    res.status(201).json(booking);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+
+    // Save the booking
+    const savedBooking = await newBooking.save();
+
+    // Remove the flight from available flights (since it's booked)
+    await Flight.findOneAndDelete({ name: flightName });
+
+    // Return the booking response
+    res.status(201).json(savedBooking);
+  } catch (error) {
+    console.error('Booking error:', error);
+    res.status(500).json({ error: 'Error creating booking', message: error.message });
   }
 });
 
-// Get user bookings
-router.get('/bookings', async (req, res) => {
+// GET request to fetch all bookings (using flightName instead of flightId)
+router.get('/', async (req, res) => {
   try {
-    const bookings = await Booking.find().populate('flightId');
-    res.json(bookings);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    // Fetch all bookings from the database
+    const bookings = await Booking.find();
+
+    // Map over each booking and populate the flight details based on flightName
+    const bookingsWithDetails = await Promise.all(bookings.map(async (booking) => {
+      const flight = await Flight.findOne({ name: booking.flightName });
+      return {
+        ...booking.toObject(),
+        flight, // Add flight details to booking object
+      };
+    }));
+
+    res.status(200).json(bookingsWithDetails);
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ error: 'Error fetching bookings', message: error.message });
   }
 });
 
