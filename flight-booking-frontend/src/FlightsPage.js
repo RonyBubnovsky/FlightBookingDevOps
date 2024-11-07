@@ -1,5 +1,3 @@
-// src/FlightsPage.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -11,14 +9,18 @@ const FlightsPage = () => {
   const fetchFlights = () => {
     const { name, departure, destination } = searchQuery;
     axios.get('http://localhost:3001/api/flights', { params: { name, departure, destination } })
-      .then(response => setFlights(response.data))
-      .catch(error => console.error("There was an error fetching flights!", error));
+      .then(response => {
+        setFlights(response.data);
+      })
+      .catch(error => {
+        console.error("There was an error fetching flights!", error);
+      });
   };
 
-  // Fetch all flights initially
+  // Fetch all flights initially or based on the search query
   useEffect(() => {
     fetchFlights();
-  }, []);
+  }, [searchQuery]); // Re-fetch flights when searchQuery changes
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,8 +28,8 @@ const FlightsPage = () => {
   };
 
   const handleSearch = (e) => {
-    e.preventDefault();
-    fetchFlights(); // Fetch flights with current search criteria
+    e.preventDefault(); // Prevent page reload on form submit
+    fetchFlights(); // Trigger the flight fetch with current search query
   };
 
   const handleBookFlight = (flight) => {
