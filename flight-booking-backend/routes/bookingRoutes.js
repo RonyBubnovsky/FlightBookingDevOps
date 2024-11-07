@@ -21,4 +21,15 @@ router.post('/', (req, res) => {
     .catch((err) => res.status(400).json({ error: 'Error booking flight', details: err }));
 });
 
+// Get all booked flights
+router.get('/', async (req, res) => {
+  try {
+    const bookings = await Booking.find();
+    res.json(bookings);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error retrieving booked flights" });
+  }
+});
+
 module.exports = router;
