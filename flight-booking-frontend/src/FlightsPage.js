@@ -48,36 +48,47 @@ const FlightsPage = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-3xl font-semibold mb-6">Available Flights</h1>
+    <div className="flex flex-col items-center">
+
+      {/* Headline */}
+      <h1 
+        className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+                  animate-pulse tracking-wide text-center py-4"
+      >
+        ✈️ Available Flights ✈️
+      </h1>
 
       {/* Search Form */}
-      <form onSubmit={handleSearch} className="mb-4">
-        <input
-          type="text"
-          name="name"
-          value={searchQuery.name}
-          onChange={handleInputChange}
-          placeholder="Flight Name"
-          className="border rounded p-2 mr-2"
-        />
-        <input
-          type="text"
-          name="departure"
-          value={searchQuery.departure}
-          onChange={handleInputChange}
-          placeholder="Departure City"
-          className="border rounded p-2 mr-2"
-        />
-        <input
-          type="text"
-          name="destination"
-          value={searchQuery.destination}
-          onChange={handleInputChange}
-          placeholder="Destination City"
-          className="border rounded p-2 mr-2"
-        />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Search</button>
+      <form onSubmit={handleSearch} className="flex flex-col items-center mb-4 space-y-2">
+        <div className="flex space-x-4">
+          <input
+            type="text"
+            name="name"
+            value={searchQuery.name}
+            onChange={handleInputChange}
+            placeholder="Flight Name"
+            className="border rounded p-2"
+          />
+          <input
+            type="text"
+            name="departure"
+            value={searchQuery.departure}
+            onChange={handleInputChange}
+            placeholder="Departure City"
+            className="border rounded p-2"
+          />
+          <input
+            type="text"
+            name="destination"
+            value={searchQuery.destination}
+            onChange={handleInputChange}
+            placeholder="Destination City"
+            className="border rounded p-2"
+          />
+          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+            Search
+          </button>
+        </div>
       </form>
 
       {/* Flights List */}
