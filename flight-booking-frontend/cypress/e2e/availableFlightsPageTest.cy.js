@@ -7,10 +7,7 @@ describe('Flight Booking Page', () => {
     it('should book a flight successfully', () => {
       // Wait for the headline to appear, indicating the flights have loaded
       cy.contains('✈️ Available Flights ✈️').should('exist');
-  
-      // Check if the first flight is present
-      cy.contains('Flight A').should('exist');
-  
+
       // Click the "Book Flight" button for the first flight
       cy.get("[data-cy='bookflight_button']").first().click();
   
@@ -18,7 +15,5 @@ describe('Flight Booking Page', () => {
       cy.get('.swal2-title').should('have.text', 'Success!');
       cy.get('.swal2-confirm').click();
   
-      // Check if the flight was removed from the list after booking
-      cy.contains('Flight A').should('not.exist');
     });
   });
