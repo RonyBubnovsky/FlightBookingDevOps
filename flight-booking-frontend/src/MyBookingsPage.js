@@ -15,12 +15,14 @@ const MyBookingsPage = () => {
   const cancelBooking = (flightName) => {
     axios.delete(`http://localhost:3001/api/bookings/cancel/${flightName}`)
       .then(response => {
-        // Show success alert
+        // Show success alert that disappears after 3 seconds
         Swal.fire({
           title: 'Booking Canceled',
           text: 'Your booking has been successfully canceled.',
           icon: 'success',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
+          timer: 1500,
+          timerProgressBar: true, // Show a progress bar
         });
 
         // Remove canceled flight from the UI
@@ -28,12 +30,14 @@ const MyBookingsPage = () => {
       })
       .catch(error => {
         console.error("There was an error canceling the booking:", error);
-        // Show error alert
+        // Show error alert that disappears after 3 seconds
         Swal.fire({
           title: 'Error',
           text: 'There was an error canceling your booking. Please try again later.',
           icon: 'error',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
+          timer: 2000,
+          timerProgressBar: true, // Show a progress bar
         });
       });
   };

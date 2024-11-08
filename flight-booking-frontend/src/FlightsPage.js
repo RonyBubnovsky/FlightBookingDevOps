@@ -63,7 +63,9 @@ const FlightsPage = () => {
         title: 'Success!',
         text: 'Flight booked successfully!',
         icon: 'success',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
+        timer: 1500,
+        timerProgressBar: true, // Show a progress bar
       });
     })
     .catch(error => {
@@ -74,7 +76,9 @@ const FlightsPage = () => {
         title: 'Error!',
         text: 'There was an error booking the flight. Please try again later.',
         icon: 'error',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
+        timer: 1500,
+        timerProgressBar: true, // Show a progress bar
       });
     });
   };
