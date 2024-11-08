@@ -1,5 +1,3 @@
-// src/MyBookingsPage.js
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -27,7 +25,15 @@ const MyBookingsPage = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold mb-6">My Bookings</h1>
+      {/* Updated Headline with icon outside the gradient text */}
+      <h1 
+        className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+                  animate-pulse tracking-wide text-center py-4"
+      >
+        <span className="inline-block text-white">📅</span> {/* Icon separate from gradient */}
+        My Bookings
+        <span className="inline-block text-white">📅</span> {/* Icon separate from gradient */}
+      </h1>
 
       {/* If there are no bookings, display a message */}
       {bookings.length === 0 ? (
