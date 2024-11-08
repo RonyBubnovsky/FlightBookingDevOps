@@ -165,6 +165,7 @@ const FlightsPage = () => {
               <button 
                 onClick={() => handleBookFlight(flight)} 
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+                data-cy="bookflight_button" 
               >
                 Book Flight
               </button>

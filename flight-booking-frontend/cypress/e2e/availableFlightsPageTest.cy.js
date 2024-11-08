@@ -12,7 +12,7 @@ describe('Flight Booking Page', () => {
       cy.contains('Flight A').should('exist');
   
       // Click the "Book Flight" button for the first flight
-      cy.get('.bg-green-500').first().click();
+      cy.get("[data-cy='bookflight_button']").first().click();
   
       // Assert that the success SweetAlert message appears
       cy.get('.swal2-title').should('have.text', 'Success!');
