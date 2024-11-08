@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const MyBookingsPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -14,12 +15,26 @@ const MyBookingsPage = () => {
   const cancelBooking = (flightName) => {
     axios.delete(`http://localhost:3001/api/bookings/cancel/${flightName}`)
       .then(response => {
+        // Show success alert
+        Swal.fire({
+          title: 'Booking Canceled',
+          text: 'Your booking has been successfully canceled.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+
         // Remove canceled flight from the UI
         setBookings(bookings.filter(booking => booking.bookedName !== flightName)); 
       })
       .catch(error => {
         console.error("There was an error canceling the booking:", error);
-        alert("Error canceling the booking");
+        // Show error alert
+        Swal.fire({
+          title: 'Error',
+          text: 'There was an error canceling your booking. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       });
   };
 
