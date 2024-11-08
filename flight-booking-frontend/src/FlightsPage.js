@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const FlightsPage = () => {
   const [flights, setFlights] = useState([]);
@@ -56,8 +57,26 @@ const FlightsPage = () => {
     .then(() => {
       // Remove the booked flight from the displayed list
       setFlights(flights.filter(f => f._id !== flight._id));
+
+      // Show success alert using SweetAlert2
+      Swal.fire({
+        title: 'Success!',
+        text: 'Flight booked successfully!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
     })
-    .catch(error => console.error("There was an error booking the flight!", error));
+    .catch(error => {
+      console.error("There was an error booking the flight!", error);
+
+      // Show error alert using SweetAlert2
+      Swal.fire({
+        title: 'Error!',
+        text: 'There was an error booking the flight. Please try again later.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    });
   };
 
   return (
