@@ -50,7 +50,7 @@ const MyBookingsPage = () => {
                   animate-pulse tracking-wide text-center py-4"
       >
         <span className="inline-block text-white">📅</span> {/* Icon separate from gradient */}
-        My Bookings
+        My Flights
         <span className="inline-block text-white">📅</span> {/* Icon separate from gradient */}
       </h1>
 
@@ -72,6 +72,7 @@ const MyBookingsPage = () => {
                 <button 
                   onClick={() => cancelBooking(booking.bookedName)} 
                   className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
+                  data-cy="cancelflight_button"
                 >
                   Cancel Booking
                 </button>
