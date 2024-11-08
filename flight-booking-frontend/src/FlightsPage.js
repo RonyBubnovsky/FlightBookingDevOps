@@ -72,15 +72,16 @@ const FlightsPage = () => {
       </h1>
 
       {/* Search Form */}
-      <form onSubmit={handleSearch} className="flex flex-col items-center mb-4 space-y-4">
-        <div className="flex space-x-4">
+      <form onSubmit={handleSearch} className="flex flex-col items-center mb-4 space-y-4 w-full max-w-4xl">
+        {/* Search inputs (Flight Name, Departure City, Destination City) */}
+        <div className="flex justify-between w-full space-x-4">
           <input
             type="text"
             name="name"
             value={searchQuery.name}
             onChange={handleInputChange}
             placeholder="Flight Name"
-            className="border rounded p-2"
+            className="border rounded p-2 w-full"
           />
           <input
             type="text"
@@ -88,7 +89,7 @@ const FlightsPage = () => {
             value={searchQuery.departure}
             onChange={handleInputChange}
             placeholder="Departure City"
-            className="border rounded p-2"
+            className="border rounded p-2 w-full"
           />
           <input
             type="text"
@@ -96,19 +97,19 @@ const FlightsPage = () => {
             value={searchQuery.destination}
             onChange={handleInputChange}
             placeholder="Destination City"
-            className="border rounded p-2"
+            className="border rounded p-2 w-full"
           />
         </div>
 
-        {/* Price Filter */}
-        <div className="flex space-x-4">
+        {/* Price Filter (Min and Max Price) */}
+        <div className="flex justify-between w-full space-x-4">
           <input
             type="number"
             name="minPrice"
             value={searchQuery.minPrice}
             onChange={handleInputChange}
             placeholder="Min Price"
-            className="border rounded p-2"
+            className="border rounded p-2 w-full"
           />
           <input
             type="number"
@@ -116,17 +117,18 @@ const FlightsPage = () => {
             value={searchQuery.maxPrice}
             onChange={handleInputChange}
             placeholder="Max Price"
-            className="border rounded p-2"
+            className="border rounded p-2 w-full"
           />
         </div>
 
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+        {/* Submit Button */}
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded mt-4">
           Search
         </button>
       </form>
 
       {/* Flights List */}
-      <ul>
+      <ul className="w-full max-w-4xl">
         {flights.map(flight => (
           <li key={flight._id} className="bg-white p-4 rounded-lg shadow-lg mb-4">
             <div className="flex justify-between items-center">

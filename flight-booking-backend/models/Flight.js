@@ -1,8 +1,7 @@
-// models/Flight.js
 const mongoose = require('mongoose');
 
 const flightSchema = new mongoose.Schema({
-  name: String,
+  name: { type: String, unique: true },  
   departure: String,
   destination: String,
   price: Number,
