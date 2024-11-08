@@ -1,5 +1,3 @@
-// routes/flightRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const Flight = require('../models/Flight');
@@ -9,7 +7,7 @@ const Booking = require('../models/Booking');
 router.get('/', async (req, res) => {
   try {
     // Extract search parameters from the query string
-    const { name, departure, destination } = req.query;
+    const { name, departure, destination, minPrice, maxPrice } = req.query;
 
     // Fetch all booked flight names
     const bookedFlights = await Booking.find().select('bookedName'); // Get only the flight names
@@ -24,6 +22,10 @@ router.get('/', async (req, res) => {
     if (name) filter.name = new RegExp(name, 'i'); // Case-insensitive match for name
     if (departure) filter.departure = new RegExp(departure, 'i');  // Case-insensitive match for departure
     if (destination) filter.destination = new RegExp(destination, 'i');  // Case-insensitive match for destination
+
+    // Apply price filters if provided
+    if (minPrice) filter.price = { ...filter.price, $gte: parseFloat(minPrice) }; // Min price filter
+    if (maxPrice) filter.price = { ...filter.price, $lte: parseFloat(maxPrice) }; // Max price filter
 
     // Find available flights that match the filter
     const availableFlights = await Flight.find(filter);

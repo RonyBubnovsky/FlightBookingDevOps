@@ -3,12 +3,25 @@ import axios from 'axios';
 
 const FlightsPage = () => {
   const [flights, setFlights] = useState([]);
-  const [searchQuery, setSearchQuery] = useState({ name: '', departure: '', destination: '' });
+  const [searchQuery, setSearchQuery] = useState({ 
+    name: '', 
+    departure: '', 
+    destination: '', 
+    minPrice: '', 
+    maxPrice: ''
+  });
 
   // Fetch flights based on the search query
   const fetchFlights = () => {
-    const { name, departure, destination } = searchQuery;
-    axios.get('http://localhost:3001/api/flights', { params: { name, departure, destination } })
+    const { name, departure, destination, minPrice, maxPrice } = searchQuery;
+
+    // Convert the min and max prices to numbers (if they are not empty)
+    const min = minPrice ? parseFloat(minPrice) : undefined;
+    const max = maxPrice ? parseFloat(maxPrice) : undefined;
+
+    axios.get('http://localhost:3001/api/flights', { 
+      params: { name, departure, destination, minPrice: min, maxPrice: max } 
+    })
       .then(response => {
         setFlights(response.data);
       })
@@ -59,7 +72,7 @@ const FlightsPage = () => {
       </h1>
 
       {/* Search Form */}
-      <form onSubmit={handleSearch} className="flex flex-col items-center mb-4 space-y-2">
+      <form onSubmit={handleSearch} className="flex flex-col items-center mb-4 space-y-4">
         <div className="flex space-x-4">
           <input
             type="text"
@@ -85,10 +98,31 @@ const FlightsPage = () => {
             placeholder="Destination City"
             className="border rounded p-2"
           />
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded">
-            Search
-          </button>
         </div>
+
+        {/* Price Filter */}
+        <div className="flex space-x-4">
+          <input
+            type="number"
+            name="minPrice"
+            value={searchQuery.minPrice}
+            onChange={handleInputChange}
+            placeholder="Min Price"
+            className="border rounded p-2"
+          />
+          <input
+            type="number"
+            name="maxPrice"
+            value={searchQuery.maxPrice}
+            onChange={handleInputChange}
+            placeholder="Max Price"
+            className="border rounded p-2"
+          />
+        </div>
+
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+          Search
+        </button>
       </form>
 
       {/* Flights List */}
