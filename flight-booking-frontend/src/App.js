@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import FlightsPage from './FlightsPage';
 import MyBookingsPage from './MyBookingsPage';
@@ -23,7 +23,21 @@ const App = () => {
         <Routes>
           <Route path="/flights" element={<FlightsPage />} />
           <Route path="/my-bookings" element={<MyBookingsPage />} />
-          <Route path="/" element={<h2 className="text-center text-3xl text-blue-600 mt-10">Welcome to the Flight Booking App!</h2>} />
+          <Route 
+            path="/" 
+            element={
+              <div className="text-center py-16 pb-24">
+  <div className="inline-block text-4xl font-extrabold mb-6">
+    <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-pink-500 to-purple-600 animate-pulse tracking-wide">
+      Welcome to the Flight Booking App!
+    </span>
+  </div>
+  <div>
+    <span className="text-6xl text-indigo-600">🌍</span>
+  </div>
+</div>
+            } 
+          />
         </Routes>
       </div>
     </Router>
