@@ -36,8 +36,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: "./flight-booking-frontend/package-lock.json"
 
       # Step 3: Install backend dependencies (before Docker setup)
       - name: Install backend dependencies
@@ -82,7 +80,7 @@ jobs:
 
       # Step 10: Wait for frontend server to be fully ready (20 seconds)
       - name: Wait for frontend server to be ready
-        run: sleep 20
+        run: sleep 5
 
       # Step 11: Run Cypress tests in headless mode
       - name: Run Cypress Tests
