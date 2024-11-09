@@ -90,7 +90,13 @@ jobs:
           name: cypress-results
           path: ./flight-booking-frontend/cypress/videos
 
-      # Step 14: Tear down Docker services
+      # Step 14: Run backend tests after backend is up
+      - name: Run backend tests
+        working-directory: ./flight-booking-backend
+        run: |
+          npm run test # Assuming 'test' is the script to run tests in your backend package.json
+
+      # Step 15: Tear down Docker services
       - name: Tear Down Docker Compose
         working-directory: ./flight-booking-backend
         run: docker-compose down
