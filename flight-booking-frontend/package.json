@@ -18,10 +18,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "cypress:run:pre-test": "cypress run --spec 'cypress/e2e/availableFlightsPageTest.cy.js'",
-    "cypress:run:main": "cypress run --spec 'cypress/e2e/**/*.cy.js'",
-    "cypress:run:ci": "npm run cypress:run:pre-test && npm run cypress:run:main"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
