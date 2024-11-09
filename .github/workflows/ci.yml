@@ -113,8 +113,8 @@ jobs:
           curl -X POST \
           -H "Authorization: Bearer $RENDER_API_KEY" \
           -H "Content-Type: application/json" \
-          -d '{"serviceId": "csnt6k23esus73ei0ucg"}' \
-          https://api.render.com/v1/services/csnt6k23esus73ei0ucg/deploys
+          -d '{"serviceId": "srv-csnt6k23esus73ei0ucg"}' \
+          https://api.render.com/v1/services/srv-csnt6k23esus73ei0ucg/deploys
 
       # Step 3: Deploy Frontend to Render
       - name: Deploy Frontend to Render
@@ -124,5 +124,5 @@ jobs:
           curl -X POST \
           -H "Authorization: Bearer $RENDER_API_KEY" \
           -H "Content-Type: application/json" \
-          -d '{"serviceId": "csnte5dumphs7387oaig"}' \
-          https://api.render.com/v1/services/csnte5dumphs7387oaig/deploys
+          -d '{"serviceId": "srv-csnte5dumphs7387oaig"}' \
+          https://api.render.com/v1/services/srv-csnte5dumphs7387oaig/deploys
