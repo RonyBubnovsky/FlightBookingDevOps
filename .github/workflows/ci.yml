@@ -31,9 +31,9 @@ jobs:
         working-directory: ./flight-booking-backend
         run: npm install
 
-      # Step 4: Set up MongoDB Atlas environment variable
+      # Step 4: Set up MongoDB Atlas connection string
       - name: Set up MongoDB Atlas connection string
-        run: echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> $GITHUB_ENV
+        run: echo "MONGODB_URI=mongodb+srv://ronybubnovsky:dLJgXWD3YpqPDqBG@flightbooking.4cfj2.mongodb.net/?retryWrites=true&w=majority&appName=FlightBooking" >> $GITHUB_ENV
 
       # Step 5: Install Docker Compose
       - name: Install Docker Compose
@@ -59,7 +59,7 @@ jobs:
         run: |
           docker-compose up -d --build
         env:
-          MONGO_URI: ${{ secrets.MONGODB_URI }} # Use the MongoDB Atlas URI here
+          MONGODB_URI: mongodb+srv://ronybubnovsky:dLJgXWD3YpqPDqBG@flightbooking.4cfj2.mongodb.net/?retryWrites=true&w=majority&appName=FlightBooking
 
       # Step 9: Install frontend dependencies
       - name: Install frontend dependencies

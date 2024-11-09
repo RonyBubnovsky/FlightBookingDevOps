@@ -5,5 +5,4 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - MONGODB_URI=${MONGODB_URI}
-      - PORT=${PORT}
+      - MONGODB_URI=mongodb+srv://ronybubnovsky:dLJgXWD3YpqPDqBG@flightbooking.4cfj2.mongodb.net/?retryWrites=true&w=majority&appName=FlightBooking
