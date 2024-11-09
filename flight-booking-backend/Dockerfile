@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3001
 
 # Command to run the app in development mode
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]
