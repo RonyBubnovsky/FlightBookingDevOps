@@ -51,11 +51,18 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
-      # Step 5: Set up Docker Buildx (to use Docker compose)
+      # Step 5: Cleanup previous containers (stop and remove existing containers)
+      - name: Cleanup previous containers
+        run: |
+          docker-compose down || true
+          docker ps -a -q | xargs docker stop || true
+          docker ps -a -q | xargs docker rm || true
+
+      # Step 6: Set up Docker Buildx (to use Docker compose)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Step 6: Build and run Docker Compose for backend
+      # Step 7: Build and run Docker Compose for backend
       - name: Build and Run Backend with Docker Compose
         working-directory: ./flight-booking-backend
         run: |
@@ -63,28 +70,28 @@ jobs:
         env:
           MONGO_URI: mongodb://localhost:27017/flightbooking
 
-      # Step 7: Install frontend dependencies
+      # Step 8: Install frontend dependencies
       - name: Install frontend dependencies
         working-directory: ./flight-booking-frontend
         run: npm install
 
-      # Step 8: Start frontend server in the background
+      # Step 9: Start frontend server in the background
       - name: Start frontend server
         working-directory: ./flight-booking-frontend
         run: npm start &
 
-      # Step 9: Wait for frontend to be fully ready (20 seconds)
+      # Step 10: Wait for frontend server to be fully ready (20 seconds)
       - name: Wait for frontend server to be ready
         run: sleep 20
 
-      # Step 10: Run Cypress tests in headless mode
+      # Step 11: Run Cypress tests in headless mode
       - name: Run Cypress Tests
         working-directory: ./flight-booking-frontend
         run: npx cypress run
         env:
           CYPRESS_BASE_URL: http://localhost:3000
 
-      # Step 11: Upload Cypress Test Results (optional)
+      # Step 12: Upload Cypress Test Results (optional)
       - name: Upload Cypress Test Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -92,7 +99,7 @@ jobs:
           name: cypress-results
           path: ./flight-booking-frontend/cypress/videos
 
-      # Step 12: Tear down Docker services
+      # Step 13: Tear down Docker services
       - name: Tear Down Docker Compose
         working-directory: ./flight-booking-backend
         run: docker-compose down
