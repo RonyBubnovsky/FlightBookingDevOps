@@ -1,14 +1,14 @@
 name: Flight Booking CI/CD Pipeline
 
-# Trigger the workflow on push or pull request to both main and stage branches
+# Trigger the workflow on push or pull request to both production and stage branches
 on:
   push:
     branches:
-      - main
+      - production
       - stage
   pull_request:
     branches:
-      - main
+      - production
       - stage
 
 jobs:
@@ -98,7 +98,7 @@ jobs:
   deploy:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
+    if: github.ref == 'refs/heads/production' || github.event.pull_request.base.ref == 'production'
 
     steps:
       # Step 1: Check out the code from the repository
