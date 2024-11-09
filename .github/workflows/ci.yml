@@ -44,7 +44,14 @@ jobs:
         working-directory: ./flight-booking-backend
         run: npm install
 
-      # Step 4: Set up Docker Buildx (to use Docker compose)
+      # Step 4: Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.19.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
+      # Step 5: Set up Docker Buildx (to use Docker compose)
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
@@ -52,7 +59,7 @@ jobs:
       - name: Build and Run Backend with Docker Compose
         working-directory: ./flight-booking-backend
         run: |
-          docker-compose up --build
+          docker-compose up -d --build
         env:
           MONGO_URI: mongodb://localhost:27017/flightbooking
 
@@ -66,7 +73,7 @@ jobs:
         working-directory: ./flight-booking-frontend
         run: npm start &
 
-      # Step 9: Wait for the frontend to be fully ready (20 seconds)
+      # Step 9: Wait for frontend to be fully ready (20 seconds)
       - name: Wait for frontend server to be ready
         run: sleep 20
 
