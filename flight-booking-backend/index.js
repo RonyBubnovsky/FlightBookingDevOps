@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const flightRoutes = require('./routes/flightRoutes');
+const flightRoutes = require('./routes/flightroutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const seedFlights = require('./seedFlights'); // Import the seed file
 
