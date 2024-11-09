@@ -1,22 +1,9 @@
-
 services:
   backend:
     build:
-      context: ./
+      context: .
     ports:
       - "3001:3001"
     environment:
-      - MONGO_URI=process.env.MONGODB_URI
-    depends_on:
-      - mongodb
-
-  mongodb:
-    image: mongo:4.2
-    container_name: flightbooking-db
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
-volumes:
-  mongo-data:
+      - MONGODB_URI=mongodb+srv://ronybubnovsky:Rony2620@flightbooking.4cfj2.mongodb.net/?retryWrites=true&w=majority&appName=FlightBooking
+      - PORT=3001

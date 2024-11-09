@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 3001;  // Fix the PORT assignment
 // Suppress Mongoose deprecation warning
 mongoose.set('strictQuery', false);
 
+
 // Middleware
 app.use(cors()); // Enabling Cross-Origin Resource Sharing
 app.use(express.json()); // Parsing application/json
@@ -20,7 +21,7 @@ app.use('/api/flights', flightRoutes);
 app.use('/api/bookings', bookingRoutes);
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb+srv://ronybubnovsky:Rony2620@flightbooking.4cfj2.mongodb.net/?retryWrites=true&w=majority&appName=FlightBooking')
   .then(() => {
     console.log('Connected to MongoDB');
 
