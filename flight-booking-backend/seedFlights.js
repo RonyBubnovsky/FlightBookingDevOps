@@ -16,9 +16,16 @@ const seedFlights = async () => {
       { name: 'Flight J', departure: 'Washington DC', destination: 'London', price: 500 },
     ];
 
-    // Insert the sample flights into the database
-    await Flight.insertMany(sampleFlights);
-    console.log('Sample flights added to the database!');
+    // Loop through each sample flight and upsert it in the database
+    for (const flight of sampleFlights) {
+      await Flight.updateOne(
+        { name: flight.name }, // Search criteria
+        { $set: flight },      // Data to insert/update
+        { upsert: true }       // Create if not exists
+      );
+    }
+    
+    console.log('Sample flights added/updated in the database!');
   } catch (error) {
     console.error('Error seeding flights:', error);
   }
