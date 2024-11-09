@@ -52,7 +52,7 @@ jobs:
       - name: Build and Run Backend with Docker Compose
         working-directory: ./flight-booking-backend
         run: |
-          docker-compose up -d
+          docker-compose up --build
         env:
           MONGO_URI: mongodb://localhost:27017/flightbooking
 
