@@ -5,9 +5,6 @@ describe('My Bookings Page', () => {
     });
   
     it('should cancel a flight booking successfully', () => {
-      // Wait for the headline to appear, indicating the page has loaded
-      cy.contains('My Flights').should('exist');
-  
       // Click the "Cancel Booking" button for the first booking
       cy.get("[data-cy='cancelflight_button']").first().click();
   

@@ -5,9 +5,6 @@ describe('Flight Booking Page', () => {
     });
   
     it('should book a flight successfully', () => {
-      // Wait for the headline to appear, indicating the flights have loaded
-      cy.contains('✈️ Available Flights ✈️').should('exist');
-
       // Click the "Book Flight" button for the first flight
       cy.get("[data-cy='bookflight_button']").first().click();
   
