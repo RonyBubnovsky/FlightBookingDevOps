@@ -94,7 +94,7 @@ jobs:
       - name: Run backend tests
         working-directory: ./flight-booking-backend
         run: |
-          npm run test # Assuming 'test' is the script to run tests in your backend package.json
+          npm test
 
       # Step 15: Tear down Docker services
       - name: Tear Down Docker Compose
