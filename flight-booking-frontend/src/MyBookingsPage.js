@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
+// Define the base URL for API requests
+const url = 'https://flight-booking-server-n175.onrender.com/';
+
 const MyBookingsPage = () => {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
     // Fetch bookings when the component is mounted
-    axios.get('http://localhost:3001/api/bookings')
+    axios.get(`${url}api/bookings`)
       .then(response => setBookings(response.data))
       .catch(error => console.error("There was an error fetching bookings!", error));
   }, []);
 
   const cancelBooking = (flightName) => {
-    axios.delete(`http://localhost:3001/api/bookings/cancel/${flightName}`)
+    axios.delete(`${url}api/bookings/cancel/${flightName}`)
       .then(response => {
         // Show success alert that disappears after 3 seconds
         Swal.fire({
