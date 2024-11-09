@@ -1,4 +1,4 @@
-name: Flight Booking CI Pipeline
+name: Flight Booking CI/CD Pipeline
 
 # Trigger the workflow on push or pull request to both main and stage branches
 on:
@@ -71,7 +71,7 @@ jobs:
         working-directory: ./flight-booking-frontend
         run: npm start &
 
-      # Step 11: Wait for frontend server to be fully ready (20 seconds)
+      # Step 11: Wait for frontend server to be ready (5 seconds)
       - name: Wait for frontend server to be ready
         run: sleep 5
 
@@ -94,3 +94,35 @@ jobs:
       - name: Tear Down Docker Compose
         working-directory: ./flight-booking-backend
         run: docker-compose down
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
+
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Deploy Backend to Render
+      - name: Deploy Backend to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"serviceId": "csnt6k23esus73ei0ucg"}' \
+          https://api.render.com/v1/services/csnt6k23esus73ei0ucg/deploys
+
+      # Step 3: Deploy Frontend to Render
+      - name: Deploy Frontend to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X POST \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"serviceId": "csnte5dumphs7387oaig"}' \
+          https://api.render.com/v1/services/csnte5dumphs7387oaig/deploys
