@@ -1,0 +1,105 @@
+name: Flight Booking CI Pipeline
+
+# Trigger the workflow on push or pull request to both main and stage branches
+on:
+  push:
+    branches:
+      - main
+      - stage
+  pull_request:
+    branches:
+      - main
+      - stage
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:4.2
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "./flight-booking-frontend/package-lock.json"
+
+      # Step 3: Install backend dependencies (before Docker setup)
+      - name: Install backend dependencies
+        working-directory: ./flight-booking-backend
+        run: npm install
+
+      # Step 4: Install Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.19.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+          docker-compose --version
+
+      # Step 5: Cleanup previous containers (stop and remove existing containers)
+      - name: Cleanup previous containers
+        run: |
+          docker-compose down || true
+          docker ps -a -q | xargs docker stop || true
+          docker ps -a -q | xargs docker rm || true
+
+      # Step 6: Set up Docker Buildx (to use Docker compose)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 7: Build and run Docker Compose for backend
+      - name: Build and Run Backend with Docker Compose
+        working-directory: ./flight-booking-backend
+        run: |
+          docker-compose up -d --build
+        env:
+          MONGO_URI: mongodb://localhost:27017/flightbooking
+
+      # Step 8: Install frontend dependencies
+      - name: Install frontend dependencies
+        working-directory: ./flight-booking-frontend
+        run: npm install
+
+      # Step 9: Start frontend server in the background
+      - name: Start frontend server
+        working-directory: ./flight-booking-frontend
+        run: npm start &
+
+      # Step 10: Wait for frontend server to be fully ready (20 seconds)
+      - name: Wait for frontend server to be ready
+        run: sleep 20
+
+      # Step 11: Run Cypress tests in headless mode
+      - name: Run Cypress Tests
+        working-directory: ./flight-booking-frontend
+        run: npx cypress run
+        env:
+          CYPRESS_BASE_URL: http://localhost:3000
+
+      # Step 12: Upload Cypress Test Results (optional)
+      - name: Upload Cypress Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-results
+          path: ./flight-booking-frontend/cypress/videos
+
+      # Step 13: Tear down Docker services
+      - name: Tear Down Docker Compose
+        working-directory: ./flight-booking-backend
+        run: docker-compose down

@@ -97,4 +97,4 @@ The project is integrated with Continuous Integration (CI) and Continuous Deploy
 
 ## Contributing
 
-Feel free to fork this project and create pull requests. Contributions are welcome!
+Feel free to fork this project and create pull requests. Contributions are welcome!!
