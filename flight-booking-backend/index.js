@@ -1,38 +1,46 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const bodyParser = require('body-parser');
-const flightRoutes = require('./routes/flightRoutes'); // Assuming you have a route for flights
+const flightRoutes = require('./routes/flightRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
+const seedFlights = require('./seedFlights'); // Import the seed file
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;  // Fix the PORT assignment
 
-// MongoDB URI
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://ronybubnovsky:dLJgXWD3YpqPDqBG@flightbooking.4cfj2.mongodb.net/flightBooking?retryWrites=true&w=majority';
+// Suppress Mongoose deprecation warning
+mongoose.set('strictQuery', false);
 
-// Middleware setup
-app.use(cors());
-app.use(bodyParser.json());
+// Middleware
+app.use(cors()); // Enabling Cross-Origin Resource Sharing
+app.use(express.json()); // Parsing application/json
 
 // Routes
-app.use('/api/flights', flightRoutes); // Add flight routes or any other routes you need
+app.use('/api/flights', flightRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
   res.status(200).send('Server is running!');
 });
 
-// Connect to MongoDB
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB successfully!'))
-  .catch((err) => console.log('MongoDB connection error:', err));
+// MongoDB Connection
+mongoose.connect('mongodb+srv://ronybubnovsky:dLJgXWD3YpqPDqBG@flightbooking.4cfj2.mongodb.net/?retryWrites=true&w=majority&appName=FlightBooking', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log('Connected to MongoDB');
 
-// Start the server
+    // Call the seed function to add flight data to the database if not already present
+    seedFlights(); // This will insert the flight data
+  })
+  .catch(err => {
+    console.error('Error connecting to MongoDB:', err);
+  });
+
+// Start the server only when the script is run directly
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
-
 
 module.exports = app; // Export the app for testing purposes
