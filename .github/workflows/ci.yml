@@ -36,11 +36,12 @@ jobs:
         uses: actions/checkout@v3
 
       # Step 2: Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
+       - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: './flight-booking-frontend/package-lock.json'
 
       # Step 3: Install backend dependencies (before Docker setup)
       - name: Install backend dependencies
