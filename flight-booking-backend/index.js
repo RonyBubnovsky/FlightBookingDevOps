@@ -19,19 +19,28 @@ app.use(express.json()); // Parsing application/json
 app.use('/api/flights', flightRoutes);
 app.use('/api/bookings', bookingRoutes);
 
+// Basic route
+app.get('/', (req, res) => {
+  res.status(200).send('Server is running!');
+});
+
 // MongoDB Connection
 mongoose.connect('mongodb://mongodb:27017/flightbooking', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB');
-
-    // Call the seed function to add flight data to the database if not already present
-    seedFlights(); // This will insert the flight data
+    console.log("readyState: ", mongoose.connection.readyState);
+    seedFlights(); // Insert flight data
   })
   .catch(err => {
     console.error('Error connecting to MongoDB:', err);
   });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Only start the server if the file is run directly
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+// Export the app for testing
+module.exports = app;
