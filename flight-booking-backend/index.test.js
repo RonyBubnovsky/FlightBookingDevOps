@@ -14,7 +14,6 @@ describe('Flight API', () => {
 
 
 describe('MongoDB Connection', () => {
-    console.log(mongoose.connection);
   it('should be connected to MongoDB', () => {
     // Verify that MongoDB connection is responding.
     expect(mongoose.connection.readyState).toBeGreaterThanOrEqual(1);
