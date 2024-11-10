@@ -1,15 +1,12 @@
 name: Flight Booking CI Pipeline
 
-# Trigger the workflow on push or pull request to both main and stage branches
+# Trigger the workflow on push or pull request
 on:
   push:
     branches:
-      - main
-      - stage
+      - noCDbranch
   pull_request:
-    branches:
-      - main
-      - stage
+    branches: -noCDbranch
 
 jobs:
   test:
