@@ -66,42 +66,35 @@ jobs:
         env:
           MONGO_URI: mongodb://localhost:27017/flightbooking
 
-      # Step 8: Wait for MongoDB to be ready (Optional, but recommended)
-      - name: Wait for MongoDB to be ready
-        run: |
-          until mongo --host localhost --eval "print('waiting for MongoDB to be ready')" > /dev/null 2>&1; do
-            sleep 5
-          done
-
-      # Step 9: Install frontend dependencies (optional if frontend testing is needed)
+      # Step 8: Install frontend dependencies (optional if frontend testing is needed)
       - name: Install frontend dependencies
         working-directory: ./flight-booking-frontend
         run: npm install
 
-      # Step 10: Start frontend server in the background (optional if frontend is part of the test)
+      # Step 9: Start frontend server in the background (optional if frontend is part of the test)
       - name: Start frontend server
         working-directory: ./flight-booking-frontend
         run: npm start &
 
-      # Step 11: Wait for frontend server to be fully ready (optional, 20 seconds or more)
+      # Step 10: Wait for frontend server to be fully ready (optional, 20 seconds or more)
       - name: Wait for frontend server to be ready
         run: sleep 20
 
-      # Step 12: Run backend tests
+      # Step 11: Run backend tests
       - name: Run Backend Tests
         working-directory: ./flight-booking-backend
         run: npm test
         env:
           MONGO_URI: mongodb://localhost:27017/flightbooking
 
-      # Step 13: Run Cypress tests (frontend testing)
+      # Step 12: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
         working-directory: ./flight-booking-frontend
         run: npx cypress run
         env:
           CYPRESS_BASE_URL: http://localhost:3000
 
-      # Step 14: Upload Cypress Test Results (optional)
+      # Step 13: Upload Cypress Test Results (optional)
       - name: Upload Cypress Test Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -109,7 +102,7 @@ jobs:
           name: cypress-results
           path: ./flight-booking-frontend/cypress/videos
 
-      # Step 15: Tear down Docker services
+      # Step 14: Tear down Docker services
       - name: Tear Down Docker Compose
         working-directory: ./flight-booking-backend
         run: docker-compose down
