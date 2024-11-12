@@ -5,7 +5,7 @@ const { Client } = require('pg');
 // Create a PostgreSQL client instance
 const client = new Client({
   user: 'myuser',
-  host: 'localhost', // Service name from docker-compose.yml
+  host: 'localhost',
   database: 'flightbooking',
   password: 'mysecurepassword',
   port: 5432,

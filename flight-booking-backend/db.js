@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 
 // Directly using the raw connection string
-const sequelize = new Sequelize('postgresql://myuser:mysecurepassword@postgres:5432/flightbooking', {
+const sequelize = new Sequelize('postgres://myuser:mysecurepassword@postgres:5432/flightbooking', {
   dialect: 'postgres',
   logging: false,
 });

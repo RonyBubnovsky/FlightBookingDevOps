@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3001
 
 # Command to run the app in development mode
-CMD ["sh", "-c", "echo 'Running npm start' && npm start"]
+CMD ["npm", "start"]
