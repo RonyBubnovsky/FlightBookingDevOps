@@ -47,31 +47,59 @@ jobs:
       # Step 7: Kill any process using port 5432
       - name: Kill process using port 5432
         run: |
-          # Stop any container using port 5432
           CONTAINER_ID=$(sudo lsof -t -i:5432)
           if [ ! -z "$CONTAINER_ID" ]; then
             sudo docker stop $CONTAINER_ID || true
           fi
-          # Kill any processes that might still be using the port
           sudo fuser -k 5432/tcp || true
-        continue-on-error: true # This ensures the pipeline continues even if no process is found
+        continue-on-error: true
 
       # Step 8: Build Docker containers using Docker Compose
       - name: Build and start Docker containers
         run: docker-compose up --build -d
         working-directory: ./flight-booking-backend
 
-      # Step 9: Start frontend application
+      # Step 9: Check if the backend is responding on port 3001
+      - name: Check backend response
+        run: |
+          for i in {1..10}; do
+            if curl --fail http://localhost:3001; then
+              echo "Backend is up!"
+              exit 0
+            else
+              echo "Waiting for backend to start..."
+              sleep 5
+            fi
+          done
+          echo "Backend did not respond on time"
+          exit 1
+
+      # Step 10: Start frontend application
       - name: Start frontend application
         run: npm start &
         working-directory: ./flight-booking-frontend
 
-      # Step 11: Run Cypress tests
+      # Step 11: Check if the frontend is responding on port 3000
+      - name: Check frontend response
+        run: |
+          for i in {1..10}; do
+            if curl --fail http://localhost:3000; then
+              echo "Frontend is up!"
+              exit 0
+            else
+              echo "Waiting for frontend to start..."
+              sleep 5
+            fi
+          done
+          echo "Frontend did not respond on time"
+          exit 1
+
+      # Step 12: Run Cypress tests
       - name: Run Cypress tests
         working-directory: ./flight-booking-frontend
         run: npx cypress run
 
-      # Step 12: Shut down Docker containers
+      # Step 13: Shut down Docker containers
       - name: Shut down Docker containers
         run: docker-compose -f docker-compose.yml down
         working-directory: ./flight-booking-backend
