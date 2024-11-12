@@ -78,30 +78,25 @@ jobs:
         working-directory: ./flight-booking-frontend
         run: npm install
 
-      # Step 9: Start frontend server in the background (optional if frontend is part of the test)
-      - name: Start frontend server
-        working-directory: ./flight-booking-frontend
-        run: npm start &
-
-      # Step 10: Wait for frontend server to be fully ready (optional, 5 seconds or more)
-      - name: Wait for frontend server to be ready
-        run: sleep 5
-
-      # Step 11: Run backend tests
-      - name: Run Backend Tests
+      # Step 9: Start backend server (index.js)
+      - name: Start Backend Server
         working-directory: ./flight-booking-backend
-        run: npm test
+        run: npm start &
         env:
-          DATABASE_URL: postgres://myuser:mysecurepassword@localhost:5432/flightbooking
+          DATABASE_URL: postgres://myuser:mysecurepassword@postgres:5432/flightbooking
 
-      # Step 12: Run Cypress tests (frontend testing)
+      # Step 10: Wait for backend server to be fully ready
+      - name: Wait for Backend Server to be Ready
+        run: sleep 10
+
+      # Step 11: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
         working-directory: ./flight-booking-frontend
         run: npx cypress run
         env:
           CYPRESS_BASE_URL: http://localhost:3000
 
-      # Step 13: Upload Cypress Test Results (optional)
+      # Step 12: Upload Cypress Test Results (optional)
       - name: Upload Cypress Test Results
         if: always()
         uses: actions/upload-artifact@v3
@@ -109,7 +104,7 @@ jobs:
           name: cypress-results
           path: ./flight-booking-frontend/cypress/videos
 
-      # Step 14: Tear down Docker services
+      # Step 13: Tear down Docker services
       - name: Tear Down Docker Compose
         working-directory: ./flight-booking-backend
         run: docker-compose down
