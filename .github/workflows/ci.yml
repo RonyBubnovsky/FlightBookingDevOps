@@ -62,13 +62,18 @@ jobs:
       # Step 7: Kill any process using port 5432
       - name: Kill process using port 5432
         run: |
-          sudo lsof -t -i:5432 | xargs sudo kill -9 || true
-          sudo fuser -k 5432/tcp || true  # Additional check to kill processes using port 5432
+          # Stop any container using port 5432
+          CONTAINER_ID=$(sudo lsof -t -i:5432)
+          if [ ! -z "$CONTAINER_ID" ]; then
+            sudo docker stop $CONTAINER_ID || true
+          fi
+          # Kill any processes that might still be using the port
+          sudo fuser -k 5432/tcp || true
         continue-on-error: true # This ensures the pipeline continues even if no process is found
 
       # Step 8: Build Docker containers using Docker Compose
       - name: Build and start Docker containers
-        run: docker-compose up --build -d
+        run: docker-compose -f docker-compose.yml up --build -d
         working-directory: ./flight-booking-backend
 
       # Step 9: Start frontend application
