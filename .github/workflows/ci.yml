@@ -71,10 +71,6 @@ jobs:
         env:
           DATABASE_URL: postgresql://myuser:mysecurepassword@postgres:5432/flightbooking
 
-      # Step 8: Wait for PostgreSQL and Backend to be ready
-      - name: Wait for PostgreSQL and Backend to be ready
-        run: sleep 20
-
       # Step 10: Install frontend dependencies
       - name: Install frontend dependencies
         working-directory: ./flight-booking-frontend
@@ -97,7 +93,23 @@ jobs:
 
       # Step 13: Wait for frontend server to be fully ready
       - name: Wait for frontend server to be ready
-        run: sleep 15
+        run: sleep 5
+
+      - name: Install Cypress packages
+        working-directory: ./flight-booking-frontend
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgtk2.0-0 \
+            libgtk-3-0 \
+            libnotify-dev \
+            libgconf-2-4 \
+            libnss3 \
+            libxss1 \
+            libasound2 \
+            libxtst6 \
+            libcanberra-gtk* \
+            libnss3-tools
 
       # Step 14: Run Cypress Tests (frontend testing)
       - name: Run Cypress Tests
