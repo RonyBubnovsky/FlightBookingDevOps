@@ -64,7 +64,7 @@ jobs:
         run: |
           echo "Waiting for backend to start..."
           for i in {1..10}; do
-            if curl -s http://backend:3001/health; then
+            if curl -s http://localhost:3001/health; then
               echo "Backend is ready!"
               break
             fi
