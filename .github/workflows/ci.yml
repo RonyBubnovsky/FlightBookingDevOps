@@ -1,124 +1,82 @@
-name: Flight Booking CI Pipeline
+name: CI Pipeline
 
-# Trigger the workflow on push or pull request
 on:
   push:
-    branches:
-      - noCDbranch
-      - PostgreSQLbranch
+    branches: [PostgreSQLbranch]
   pull_request:
-    branches:
-      - noCDbranch
+    branches: [PostgreSQLbranch]
 
 jobs:
-  test:
+  build-and-test:
     runs-on: ubuntu-latest
 
     services:
       postgres:
         image: postgres:15-alpine
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U myuser -d flightbooking"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
         env:
           POSTGRES_USER: myuser
           POSTGRES_PASSWORD: mysecurepassword
           POSTGRES_DB: flightbooking
+        options: >-
+          --health-cmd="pg_isready -U myuser -d flightbooking" 
+          --health-interval=10s 
+          --health-timeout=5s 
+          --health-retries=5
+        ports:
+          - 5432:5432
 
     steps:
-      # Step 1: Check out the code from the repository
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
+      # Step 2: Set up Node.js for backend
+      - name: Set up Node.js backend
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: 20
+        working-directory: ./flight-booking-backend
 
-      # Step 3: Install backend dependencies (before Docker setup)
+      # Step 3: Install backend dependencies
       - name: Install backend dependencies
-        working-directory: ./flight-booking-backend
         run: npm install
-
-      # Step 4: Install Docker Compose
-      - name: Install Docker Compose
-        run: |
-          sudo curl -L "https://github.com/docker/compose/releases/download/v2.19.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-      # Step 5: Cleanup previous containers (stop and remove existing containers)
-      - name: Cleanup previous containers
-        run: |
-          docker-compose down || true
-          docker ps -a -q | xargs docker stop || true
-          docker ps -a -q | xargs docker rm || true
-
-      # Step 6: Set up Docker Buildx (to use Docker compose)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # Step 7: Build and Run Backend with Docker Compose
-      - name: Build and Run Backend with Docker Compose
         working-directory: ./flight-booking-backend
-        run: |
-          docker-compose up -d --build
-        env:
-          DATABASE_URL: postgresql://myuser:mysecurepassword@postgres:5432/flightbooking
 
-      # Step 10: Install frontend dependencies
+      # Step 4: Set up Node.js for frontend
+      - name: Set up Node.js frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+        working-directory: ./flight-booking-frontend
+
+      # Step 5: Install frontend dependencies
       - name: Install frontend dependencies
+        run: npm install
         working-directory: ./flight-booking-frontend
-        run:
-          npm install
 
-          # Step 11: Install necessary libraries for Cypress
-      - name: Install Cypress dependencies
-        working-directory: ./flight-booking-frontend
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev \
-                                  libnotify-dev libgconf-2-4 libnss3 libxss1 \
-                                  libasound2 libxtst6 xauth xvfb
-
-      # Step 12: Start frontend server in the background
-      - name: Start frontend server
-        working-directory: ./flight-booking-frontend
-        run: npm start &
-
-      # Step 13: Wait for frontend server to be fully ready
-      - name: Wait for frontend server to be ready
-        run: sleep 5
-
-      - name: Install Cypress packages
-        working-directory: ./flight-booking-frontend
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libgtk2.0-0 \
-            libgtk-3-0 \
-            libnotify-dev \
-            libgconf-2-4 \
-            libnss3 \
-            libxss1 \
-            libasound2 \
-            libxtst6 \
-            libcanberra-gtk* \
-            libnss3-tools
-
-      # Step 14: Run Cypress Tests (frontend testing)
-      - name: Run Cypress Tests
-        working-directory: ./flight-booking-frontend
-        run: npx cypress run --headed
-        env:
-          CYPRESS_BASE_URL: http://localhost:3000
-
-      # Step 15: Tear down Docker services
-      - name: Tear Down Docker Compose
+      # Step 6: Build Docker containers using Docker Compose
+      - name: Build and start Docker containers
+        run: docker-compose up --build -d
         working-directory: ./flight-booking-backend
+
+      # Step 7: Wait for backend to be ready
+      - name: Wait for backend to be ready
+        run: |
+          for i in {1..30}; do
+            if nc -z localhost 3001; then
+              echo "Backend is up!";
+              break;
+            fi
+            echo "Waiting for backend to be ready...";
+            sleep 5;
+          done
+
+      # Step 8: Run Cypress tests
+      - name: Run Cypress tests
+        working-directory: ./flight-booking-frontend
+        run: npx cypress run
+
+      # Step 9: Shut down Docker containers
+      - name: Shut down Docker containers
         run: docker-compose down
+        working-directory: ./flight-booking-backend
