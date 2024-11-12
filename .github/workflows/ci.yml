@@ -68,7 +68,7 @@ jobs:
         run: |
           docker-compose up -d --build
         env:
-          DATABASE_URL: postgres://myuser:mysecurepassword@localhost:5432/flightbooking
+          DATABASE_URL: postgres://myuser:mysecurepassword@postgres:5432/flightbooking
 
       # Step 8: Install frontend dependencies (optional if frontend testing is needed)
       - name: Install frontend dependencies
