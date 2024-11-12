@@ -1,41 +1,52 @@
 const express = require('express');
 const router = express.Router();
-const Flight = require('../models/Flight');
-const Booking = require('../models/Booking');
+const { Op } = require('sequelize');
+const Flight = require('../models/Flight'); // Import the Flight model
+const Booking = require('../models/Booking'); // Import the Booking model
 
-// Fetch available flights, excluding those that are already booked, and based on the search query
-router.get('/', async (req, res) => {
-  try {
-    // Extract search parameters from the query string
-    const { name, departure, destination, minPrice, maxPrice } = req.query;
+module.exports = () => {
+  // Fetch available flights, excluding those that are already booked
+  router.get('/', async (req, res) => {
+    try {
+      // Extract search parameters from the query string
+      const { name, departure, destination, minPrice, maxPrice } = req.query;
 
-    // Fetch all booked flight names
-    const bookedFlights = await Booking.find().select('bookedName'); // Get only the flight names
+      // Step 1: Get all booked flight names
+      const bookedFlights = await Booking.findAll({ attributes: ['bookedName'] });
+      const bookedFlightNames = bookedFlights.map(booking => booking.bookedName);
 
-    // Extract the names of the booked flights
-    const bookedFlightNames = bookedFlights.map(booking => booking.bookedName);
+      // Step 2: Build query with filters
+      let queryOptions = {
+        where: {
+          name: {
+            [Op.notIn]: bookedFlightNames,
+            [Op.iLike]: `%${name || ''}%`,
+          },
+          departure: {
+            [Op.iLike]: `%${departure || ''}%`,
+          },
+          destination: {
+            [Op.iLike]: `%${destination || ''}%`,
+          },
+          price: maxPrice ? {
+            [Op.between]: [minPrice || 0, maxPrice],  // If maxPrice is provided, use the range
+          } : {
+            [Op.gte]: minPrice || 0,  // If maxPrice is not provided, filter by minPrice only
+          },
+        },
+      };
+      
 
-    // Build the filter object based on the search query parameters
-    const filter = { name: { $nin: bookedFlightNames } };  // Exclude booked flights
+      // Step 3: Execute the query
+      const availableFlights = await Flight.findAll(queryOptions);
 
-    // Apply additional filters based on search criteria if provided
-    if (name) filter.name = new RegExp(name, 'i'); // Case-insensitive match for name
-    if (departure) filter.departure = new RegExp(departure, 'i');  // Case-insensitive match for departure
-    if (destination) filter.destination = new RegExp(destination, 'i');  // Case-insensitive match for destination
+      // Step 4: Send available flights as the response
+      res.json(availableFlights);
+    } catch (error) {
+      console.error("Error fetching available flights:", error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
 
-    // Apply price filters if provided
-    if (minPrice) filter.price = { ...filter.price, $gte: parseFloat(minPrice) }; // Min price filter
-    if (maxPrice) filter.price = { ...filter.price, $lte: parseFloat(maxPrice) }; // Max price filter
-
-    // Find available flights that match the filter
-    const availableFlights = await Flight.find(filter);
-
-    // Send the available flights as the response
-    res.json(availableFlights);
-  } catch (error) {
-    console.error("There was an error fetching available flights:", error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-module.exports = router;
+  return router;
+};

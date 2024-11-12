@@ -2,7 +2,26 @@ services:
   backend:
     build:
       context: .
+      dockerfile: Dockerfile
     ports:
       - "3001:3001"
     environment:
-      - MONGODB_URI=mongodb+srv://ronybubnovsky:dLJgXWD3YpqPDqBG@flightbooking.4cfj2.mongodb.net/?retryWrites=true&w=majority&appName=FlightBooking
+      DATABASE_URL: postgres://myuser:mysecurepassword@postgres:5432/flightbooking
+    depends_on:
+      postgres:
+        condition: service_healthy  # Ensure postgres is healthy before starting backend
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mysecurepassword
+      POSTGRES_DB: flightbooking
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "myuser", "-d", "flightbooking"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s

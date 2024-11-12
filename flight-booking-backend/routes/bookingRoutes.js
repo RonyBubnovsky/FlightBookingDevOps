@@ -1,55 +1,61 @@
-// routes/bookingRoutes.js
 const express = require('express');
-const Booking = require('../models/Booking'); // Import the Booking model
 const router = express.Router();
+const Booking = require('../models/Booking'); // Import the Booking model
 
-// POST route for creating a booking
-router.post('/', (req, res) => {
-  const { bookedName, bookedDeparture, bookedDestination, bookedPrice } = req.body;
+module.exports = () => {
+  // POST route for creating a booking
+  router.post('/', async (req, res) => {
+    const { bookedName, bookedDeparture, bookedDestination, bookedPrice } = req.body;
 
-  // Create a new booking document
-  const newBooking = new Booking({
-    bookedName,
-    bookedDeparture,
-    bookedDestination,
-    bookedPrice,
+    try {
+      // Create a new booking using Sequelize ORM
+      const newBooking = await Booking.create({
+        bookedName,
+        bookedDeparture,
+        bookedDestination,
+        bookedPrice
+      });
+
+      res.status(201).json({
+        message: 'Flight booked successfully!',
+        booking: newBooking,
+      });
+    } catch (err) {
+      console.error('Error booking flight:', err);
+      res.status(400).json({ error: 'Error booking flight', details: err });
+    }
   });
 
-  // Save the new booking to the database
-  newBooking.save()
-    .then(() => res.status(201).json({ message: 'Flight booked successfully!' }))
-    .catch((err) => res.status(400).json({ error: 'Error booking flight', details: err }));
-});
-
-// Get all booked flights
-router.get('/', async (req, res) => {
-  try {
-    const bookings = await Booking.find();
-    res.json(bookings);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error retrieving booked flights" });
-  }
-});
-
-// Cancel a booking
-router.delete('/cancel/:flightName', async (req, res) => {
-  try {
-    const flightName = req.params.flightName; // Get the flight name from the URL parameter
-
-    // Find and delete the booking with the matching flight name
-    const canceledBooking = await Booking.findOneAndDelete({ bookedName: flightName });
-
-    if (!canceledBooking) {
-      return res.status(404).json({ message: 'Booking not found' });
+  // GET route to get all bookings
+  router.get('/', async (req, res) => {
+    try {
+      const bookings = await Booking.findAll();
+      res.status(200).json(bookings);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+      res.status(500).json({ message: 'Error retrieving booked flights' });
     }
+  });
 
-    // Respond with success message
-    res.status(200).json({ message: 'Booking canceled successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error canceling the booking' });
-  }
-});
+  // DELETE route to cancel a booking by flight name
+  router.delete('/cancel/:flightName', async (req, res) => {
+    const flightName = req.params.flightName;
 
-module.exports = router;
+    try {
+      const deletedBooking = await Booking.destroy({
+        where: { bookedName: flightName },
+      });
+
+      if (deletedBooking === 0) {
+        return res.status(404).json({ message: 'Booking not found' });
+      }
+
+      res.status(200).json({ message: 'Booking canceled successfully' });
+    } catch (error) {
+      console.error('Error canceling the booking:', error);
+      res.status(500).json({ message: 'Error canceling the booking' });
+    }
+  });
+
+  return router;
+};
