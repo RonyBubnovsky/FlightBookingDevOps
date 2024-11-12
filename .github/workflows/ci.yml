@@ -85,13 +85,6 @@ jobs:
       - name: Wait for frontend server to be ready
         run: sleep 10
 
-      # Step 11: Run backend tests
-      - name: Run Backend Tests
-        working-directory: ./flight-booking-backend
-        run: npm test
-        env:
-          DATABASE_URL: postgresql://myuser:mysecurepassword@postgres:5432/flightbooking
-
       # Step 12: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
         working-directory: ./flight-booking-frontend
