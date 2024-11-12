@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - noCDbranch
+      - PostgreSQLbranch
   pull_request:
     branches:
       - noCDbranch
