@@ -68,7 +68,7 @@ jobs:
 
       # Step 8: Build Docker containers using Docker Compose
       - name: Build and start Docker containers
-        run: docker-compose -f docker-compose.yml up --build -d
+        run: docker-compose up --build -d
         working-directory: ./flight-booking-backend
 
       # Step 9: Start frontend application
