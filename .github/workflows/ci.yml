@@ -14,15 +14,19 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mongodb:
-        image: mongo:4.2
+      postgres:
+        image: postgres:15-alpine
         ports:
-          - 27017:27017
+          - 5432:5432
         options: >-
-          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-cmd "pg_isready -U myuser -d flightbooking"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        environment:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mysecurepassword
+          POSTGRES_DB: flightbooking
 
     steps:
       # Step 1: Check out the code from the repository
@@ -58,13 +62,13 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Step 7: Build and run Docker Compose for backend and MongoDB
+      # Step 7: Build and run Docker Compose for backend and PostgreSQL
       - name: Build and Run Backend with Docker Compose
         working-directory: ./flight-booking-backend
         run: |
           docker-compose up -d --build
         env:
-          MONGO_URI: mongodb://localhost:27017/flightbooking
+          DATABASE_URL: postgresql://myuser:mysecurepassword@postgres:5432/flightbooking
 
       # Step 8: Install frontend dependencies (optional if frontend testing is needed)
       - name: Install frontend dependencies
@@ -85,7 +89,7 @@ jobs:
         working-directory: ./flight-booking-backend
         run: npm test
         env:
-          MONGO_URI: mongodb://localhost:27017/flightbooking
+          DATABASE_URL: postgresql://myuser:mysecurepassword@postgres:5432/flightbooking
 
       # Step 12: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
@@ -93,14 +97,6 @@ jobs:
         run: npx cypress run
         env:
           CYPRESS_BASE_URL: http://localhost:3000
-
-      # Step 13: Upload Cypress Test Results (optional)
-      - name: Upload Cypress Test Results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: cypress-results
-          path: ./flight-booking-frontend/cypress/videos
 
       # Step 14: Tear down Docker services
       - name: Tear Down Docker Compose

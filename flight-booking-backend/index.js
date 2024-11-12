@@ -33,3 +33,6 @@ sequelize.sync().then(() => {
 }).catch(err => {
   console.error('Error syncing Sequelize models:', err);
 });
+
+module.exports = app;
+
