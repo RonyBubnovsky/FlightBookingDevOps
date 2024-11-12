@@ -114,7 +114,7 @@ jobs:
       # Step 14: Run Cypress Tests (frontend testing)
       - name: Run Cypress Tests
         working-directory: ./flight-booking-frontend
-        run: npx cypress run
+        run: npx cypress run --headed
         env:
           CYPRESS_BASE_URL: http://localhost:3000
 
