@@ -89,9 +89,9 @@ jobs:
       - name: Test Database Connection
         run: |
           # Wait for PostgreSQL to be ready
-          docker-compose exec -T postgres pg_isready -U myuser -d flightbooking
+          docker-compose -f ./flight-booking-backend/docker-compose.yml exec -T postgres pg_isready -U myuser -d flightbooking
           # Test connection from the backend to the database
-          docker-compose exec -T backend node -e "
+          docker-compose -f ./flight-booking-backend/docker-compose.yml exec -T backend node -e "
             const { Client } = require('pg');
             const client = new Client({
               host: 'postgres',
