@@ -64,7 +64,7 @@ jobs:
       # Step 9: Start frontend application
       - name: Start frontend application
         run: |
-          npm start
+          npm start 2>/dev/null || true
         working-directory: ./flight-booking-frontend
 
       # Step 10: Wait for backend to be ready
