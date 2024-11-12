@@ -69,7 +69,6 @@ jobs:
         run: |
           npm start
         working-directory: ./flight-booking-frontend
-        background: true # Make sure this runs in the background so the tests can proceed
 
       # Step 9: Wait for backend to be ready
       - name: Wait for backend to be ready
