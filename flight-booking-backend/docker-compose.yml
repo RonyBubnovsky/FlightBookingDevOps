@@ -1,4 +1,5 @@
 
+
 services:
   backend:
     build:
@@ -6,17 +7,21 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - MONGO_URI=mongodb://mongodb:27017/flightbooking
+      - DATABASE_URL=postgresql://myuser:mysecurepassword@postgres:5432/flightbooking
     depends_on:
-      - mongodb
+      - postgres
 
-  mongodb:
-    image: mongo:4.2
+  postgres:
+    image: postgres:15-alpine
     container_name: flightbooking-db
     ports:
-      - "27017:27017"
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mysecurepassword
+      POSTGRES_DB: flightbooking
     volumes:
-      - mongo-data:/data/db
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
-  mongo-data:
+  pgdata:

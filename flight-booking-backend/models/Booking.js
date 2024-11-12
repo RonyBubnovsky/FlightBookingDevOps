@@ -1,15 +1,27 @@
-// models/Booking.js
-const mongoose = require('mongoose');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../db'); // Import the Sequelize instance
 
-// Define the schema for bookings
-const bookingSchema = new mongoose.Schema({
-  bookedName: { type: String, required: true },
-  bookedDeparture: { type: String, required: true },
-  bookedDestination: { type: String, required: true },
-  bookedPrice: { type: Number, required: true }
+// Define the Booking model
+const Booking = sequelize.define('Booking', {
+  bookedName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  bookedDeparture: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  bookedDestination: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  bookedPrice: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+}, {
+  tableName: 'bookings',
+  timestamps: false,     
 });
-
-// Create the Booking model based on the schema
-const Booking = mongoose.model('Booking', bookingSchema);
 
 module.exports = Booking;

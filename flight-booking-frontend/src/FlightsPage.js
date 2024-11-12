@@ -56,7 +56,7 @@ const FlightsPage = () => {
     })
     .then(() => {
       // Remove the booked flight from the displayed list
-      setFlights(flights.filter(f => f._id !== flight._id));
+      setFlights(flights.filter(f => f.id !== flight.id));
 
       // Show success alert using SweetAlert2
       Swal.fire({
