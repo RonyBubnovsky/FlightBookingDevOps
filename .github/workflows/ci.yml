@@ -4,10 +4,10 @@ name: Flight Booking CI Pipeline
 on:
   push:
     branches:
-      - PostgreSQLbranch
+      - stage
   pull_request:
     branches:
-      - PostgreSQLbranch
+      - stage
 
 jobs:
   test:
