@@ -59,18 +59,24 @@ jobs:
           docker-compose -f ./flight-booking-backend/docker-compose.yml down || true
           docker system prune -f
 
-      # Step 7: Build Docker containers using Docker Compose
+      # Step 7: Kill any process using port 5432
+      - name: Kill process using port 5432
+        run: |
+          sudo lsof -t -i:5432 | xargs sudo kill -9 || true
+        continue-on-error: true # This ensures the pipeline continues even if no process is found
+
+      # Step 8: Build Docker containers using Docker Compose
       - name: Build and start Docker containers
         run: docker-compose -f docker-compose.yml up --build -d
         working-directory: ./flight-booking-backend
 
-      # Step 8: Start frontend application
+      # Step 9: Start frontend application
       - name: Start frontend application
         run: |
           npm start
         working-directory: ./flight-booking-frontend
 
-      # Step 9: Wait for backend to be ready
+      # Step 10: Wait for backend to be ready
       - name: Wait for backend to be ready
         run: |
           for i in {1..30}; do
@@ -82,12 +88,12 @@ jobs:
             sleep 5;
           done
 
-      # Step 10: Run Cypress tests
+      # Step 11: Run Cypress tests
       - name: Run Cypress tests
         working-directory: ./flight-booking-frontend
         run: npx cypress run
 
-      # Step 11: Shut down Docker containers
+      # Step 12: Shut down Docker containers
       - name: Shut down Docker containers
         run: docker-compose -f ./flight-booking-backend/docker-compose.yml down
         working-directory: ./flight-booking-backend
