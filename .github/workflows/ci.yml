@@ -76,14 +76,14 @@ jobs:
         working-directory: ./flight-booking-frontend
         run: npm install
 
-      # Step 9: Start frontend server in the background (optional if frontend is part of the test)
+      # Step 9: Start frontend server in the background
       - name: Start frontend server
         working-directory: ./flight-booking-frontend
         run: npm start &
 
-      # Step 10: Wait for frontend server to be fully ready (optional, 20 seconds or more)
+      # Step 10: Wait for frontend server to be fully ready
       - name: Wait for frontend server to be ready
-        run: sleep 5
+        run: npx wait-on http://localhost:3000
 
       # Step 11: Run backend tests
       - name: Run Backend Tests
