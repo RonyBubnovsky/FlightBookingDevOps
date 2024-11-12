@@ -78,26 +78,28 @@ jobs:
         working-directory: ./flight-booking-frontend
         run: npm install
 
-      # Step 9: Start frontend server in the background
-      - name: Start Frontend Server
+      # Step 9: Start frontend server in the background (optional if frontend is part of the test)
+      - name: Start frontend server
         working-directory: ./flight-booking-frontend
         run: npm start &
 
-      # Step 10: Start backend server (index.js)
-      - name: Start Backend Server
-        working-directory: ./flight-booking-backend
-        run: npm start &
-        env:
-          DATABASE_URL: postgres://myuser:mysecurepassword@postgres:5432/flightbooking
+      # Step 10: Wait for frontend server to be fully ready (optional, 5 seconds or more)
+      - name: Wait for frontend server to be ready
+        run: sleep 5
 
-      # Step 11: Wait for servers to be fully ready
-      - name: Wait for Servers to be Ready
-        run: sleep 15
+      # Step 11: Run backend tests
+      - name: Run Backend Tests
+        working-directory: ./flight-booking-backend
+        run: npm test
+        env:
+          DATABASE_URL: postgres://myuser:mysecurepassword@localhost:5432/flightbooking
 
       # Step 12: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
         working-directory: ./flight-booking-frontend
         run: npx cypress run
+        env:
+          CYPRESS_BASE_URL: http://localhost:3000
 
       # Step 13: Upload Cypress Test Results (optional)
       - name: Upload Cypress Test Results
