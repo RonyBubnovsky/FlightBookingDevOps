@@ -24,7 +24,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        environment:
+        env: # Fixed 'environment' to 'env'
           POSTGRES_USER: myuser
           POSTGRES_PASSWORD: mysecurepassword
           POSTGRES_DB: flightbooking
@@ -99,7 +99,7 @@ jobs:
         env:
           CYPRESS_BASE_URL: http://localhost:3000
 
-      # Step 14: Tear down Docker services
+      # Step 13: Tear down Docker services
       - name: Tear Down Docker Compose
         working-directory: ./flight-booking-backend
         run: docker-compose down
