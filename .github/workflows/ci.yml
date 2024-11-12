@@ -42,13 +42,6 @@ jobs:
         run: npm install
         working-directory: ./flight-booking-backend
 
-      # Step 4: Set up Node.js for frontend
-      - name: Set up Node.js frontend
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-        working-directory: ./flight-booking-frontend
-
       # Step 5: Install frontend dependencies
       - name: Install frontend dependencies
         run: npm install
