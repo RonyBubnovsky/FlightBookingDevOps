@@ -22,6 +22,11 @@ app.get('/', (req, res) => {
   res.status(200).send('Server is running with PostgreSQL!');
 });
 
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+
 // Sync Sequelize models and then start the server
 sequelize.sync().then(() => {
   // Call seedFlights after syncing
