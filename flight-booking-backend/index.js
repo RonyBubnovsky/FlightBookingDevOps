@@ -32,7 +32,7 @@ sequelize.sync().then(() => {
   // Call seedFlights after syncing
   seedFlights();  // Ensure this is called after sync
 
-  app.listen(PORT,'0.0.0.0', () => {
+  app.listen(PORT,() => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }).catch(err => {
