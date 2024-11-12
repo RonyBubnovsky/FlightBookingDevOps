@@ -83,7 +83,7 @@ jobs:
 
       # Step 10: Wait for frontend server to be fully ready
       - name: Wait for frontend server to be ready
-        run: npx wait-on http://localhost:3000
+        run: sleep 10
 
       # Step 11: Run backend tests
       - name: Run Backend Tests
