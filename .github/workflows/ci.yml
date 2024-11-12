@@ -66,18 +66,6 @@ jobs:
         run: npm start &
         working-directory: ./flight-booking-frontend
 
-      # Step 10: Wait for backend to be ready
-      - name: Wait for backend to be ready
-        run: |
-          for i in {1..30}; do
-            if nc -z localhost 3001; then
-              echo "Backend is up!";
-              break;
-            fi
-            echo "Waiting for backend to be ready...";
-            sleep 5;
-          done
-
       # Step 11: Run Cypress tests
       - name: Run Cypress tests
         working-directory: ./flight-booking-frontend
