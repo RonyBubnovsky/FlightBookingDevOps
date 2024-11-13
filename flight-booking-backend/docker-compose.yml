@@ -6,7 +6,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgres://myuser:mysecurepassword@postgres:5432/flightbooking
+      DATABASE_URL: postgresql://myuser:3SR4uDFCHgu1yGPaCrkE3y1kPQEX6mpL@dpg-cspr0artq21c73915jm0-a.oregon-postgres.render.com/flightbooking_a26i
     depends_on:
       postgres:
         condition: service_healthy  # Ensure postgres is healthy before starting backend
@@ -15,12 +15,12 @@ services:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mysecurepassword
-      POSTGRES_DB: flightbooking
+      POSTGRES_PASSWORD: 3SR4uDFCHgu1yGPaCrkE3y1kPQEX6mpL
+      POSTGRES_DB: flightbooking_a26i
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "myuser", "-d", "flightbooking"]
+      test: ["CMD", "pg_isready", "-U", "myuser", "-d", "flightbooking_a26i"]
       interval: 10s
       retries: 5
       start_period: 30s
