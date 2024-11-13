@@ -13,20 +13,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15-alpine
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: myuser
-          POSTGRES_PASSWORD: mysecurepassword
-          POSTGRES_DB: flightbooking
-        options: >-
-          --health-cmd "pg_isready -U myuser -d flightbooking"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:15-alpine
+    #     ports:
+    #       - 5432:5432
+    #     env:
+    #       POSTGRES_USER: myuser
+    #       POSTGRES_PASSWORD: mysecurepassword
+    #       POSTGRES_DB: flightbooking
+    #     options: >-
+    #       --health-cmd "pg_isready -U myuser -d flightbooking"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     steps:
       # Step 1: Check out the code from the repository
@@ -83,8 +83,8 @@ jobs:
           docker-compose up -d --build
           chmod +x ./wait-for-it.sh
           ./wait-for-it.sh localhost 3001
-        env:
-          DATABASE_URL: postgres://myuser:mysecurepassword@localhost:5432/flightbooking
+        # env:
+        #   DATABASE_URL: postgres://myuser:mysecurepassword@localhost:5432/flightbooking
 
       # Step 10: Install frontend dependencies
       - name: Install frontend dependencies
@@ -104,8 +104,8 @@ jobs:
       - name: Run Backend Tests
         working-directory: ./flight-booking-backend
         run: npm test
-        env:
-          DATABASE_URL: postgres://myuser:mysecurepassword@localhost:5432/flightbooking
+        # env:
+        #   DATABASE_URL: postgres://myuser:mysecurepassword@localhost:5432/flightbooking
 
       # Step 14: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
