@@ -33,29 +33,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-          cache: "npm"
-
-      # Cache Docker layers
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-      # Cache dependencies
-      - name: Cache backend dependencies
-        uses: actions/cache@v3
-        with:
-          path: ./flight-booking-backend/node_modules
-          key: ${{ runner.os }}-backend-${{ hashFiles('./flight-booking-backend/package-lock.json') }}
-
-      - name: Cache frontend dependencies
-        uses: actions/cache@v3
-        with:
-          path: ./flight-booking-frontend/node_modules
-          key: ${{ runner.os }}-frontend-${{ hashFiles('./flight-booking-frontend/package-lock.json') }}
 
       - name: Install backend dependencies
         working-directory: ./flight-booking-backend
