@@ -1,17 +1,18 @@
+// Import dotenv to load environment variables
+require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
-// Directly using the raw connection string
-const sequelize = new Sequelize('postgresql://myuser:3SR4uDFCHgu1yGPaCrkE3y1kPQEX6mpL@dpg-cspr0artq21c73915jm0-a.oregon-postgres.render.com/flightbooking_a26i', {
+// Use the DATABASE_URL environment variable (which you will set in the .env file)
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: 'postgres',
   logging: false,
   dialectOptions: {
     ssl: {
       require: true, // Ensure SSL is required
-      rejectUnauthorized: false, // Disable certificate verification
+      rejectUnauthorized: false, // Disable certificate verification for remote connections
     },
   },
 });
-
 
 async function connectDB() {
   try {
