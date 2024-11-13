@@ -1,6 +1,6 @@
 name: Flight Booking CI Pipeline
 
-# Trigger the workflow on push or pull request
+# Trigger the workflow on push or pull requests
 on:
   push:
     branches:
