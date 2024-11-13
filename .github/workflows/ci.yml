@@ -15,6 +15,21 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        options: >-
+          --health-cmd "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       # Step 1: Check out the code from the repository
       - name: Checkout code
@@ -70,6 +85,8 @@ jobs:
           docker-compose up -d --build
           chmod +x ./wait-for-it.sh
           ./wait-for-it.sh localhost 3001
+        env:
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
 
       # Step 10: Install frontend dependencies
       - name: Install frontend dependencies
@@ -89,6 +106,8 @@ jobs:
       - name: Run Backend Tests
         working-directory: ./flight-booking-backend
         run: npm test
+        env:
+          DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
 
       # Step 14: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
