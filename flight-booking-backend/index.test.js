@@ -3,13 +3,12 @@ const app = require('./index'); // Adjust the path to your main app file
 const { Client } = require('pg');
 require('dotenv').config(); // Load environment variables from .env file
 
-// Create a PostgreSQL client instance using environment variables
+// Use DATABASE_URL directly
 const client = new Client({
-  user: process.env.DB_USER,       // Use DB_USER from .env
-  host: process.env.DB_HOST,       // Use DB_HOST from .env
-  database: process.env.DB_NAME,   // Use DB_NAME from .env
-  password: process.env.DB_PASSWORD, // Use DB_PASSWORD from .env
-  port: process.env.DB_PORT,       // Use DB_PORT from .env
+  connectionString: process.env.DATABASE_URL,  // Use DATABASE_URL for full connection string
+  ssl: {
+    rejectUnauthorized: false,  // Required for cloud-hosted databases (e.g., Render)
+  }
 });
 
 describe('Flight API', () => {
