@@ -3,7 +3,7 @@ services:
     name: flight-backend
     env: docker
     plan: free # Uses the free plan
-    dockerfilePath: ./Dockerfile
+    dockerfilePath: ./flight-booking-backend/Dockerfile
     buildCommand: npm install
     startCommand: npm start
     envVars:
