@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
+// Define the base URL for API requests
+const url = 'http://localhost:3001/';
+
 const FlightsPage = () => {
   const [flights, setFlights] = useState([]);
   const [searchQuery, setSearchQuery] = useState({ 
@@ -20,7 +23,7 @@ const FlightsPage = () => {
     const min = minPrice ? parseFloat(minPrice) : undefined;
     const max = maxPrice ? parseFloat(maxPrice) : undefined;
 
-    axios.get('http://localhost:3001/api/flights', { 
+    axios.get(`${url}api/flights`, { 
       params: { name, departure, destination, minPrice: min, maxPrice: max } 
     })
       .then(response => {
@@ -48,7 +51,7 @@ const FlightsPage = () => {
 
   const handleBookFlight = (flight) => {
     // Send the booking information to the backend
-    axios.post('http://localhost:3001/api/bookings', {
+    axios.post(`${url}api/bookings`, {
       bookedName: flight.name,
       bookedDeparture: flight.departure,
       bookedDestination: flight.destination,

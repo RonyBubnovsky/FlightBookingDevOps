@@ -1,6 +1,8 @@
+
+
 const { Sequelize } = require('sequelize');
 
-// Using the raw connection string for PostgreSQL
+
 const sequelize = new Sequelize('postgres://myuser:mysecurepassword@postgres:5432/flightbooking', {
   dialect: 'postgres',
   logging: false, // Set to true if you want to see raw SQL queries in the console
