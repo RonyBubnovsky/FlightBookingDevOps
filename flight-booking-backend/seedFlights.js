@@ -1,7 +1,15 @@
+const { sequelize } = require('./db'); // Ensure Sequelize instance is imported
 const Flight = require('./models/Flight'); // Import the Flight model
+const Booking = require('./models/Booking'); // Import the Booking model
 
 const seedFlights = async () => {
   try {
+    // Step 1: Create both the 'flights' and 'bookings' tables (if they don't exist)
+    await sequelize.sync({ force: true }); // This will drop and recreate the tables
+
+    console.log('Tables created: flights and bookings');
+    
+    // Step 2: Seed sample flights (only if needed, this step is optional)
     const sampleFlights = [
       { name: 'American Airlines AA100', departure: 'New York', destination: 'London', price: 500 },
       { name: 'Delta Airlines DL24', departure: 'Los Angeles', destination: 'Paris', price: 600 },
@@ -30,7 +38,7 @@ const seedFlights = async () => {
 
     console.log('Seeding completed!');
   } catch (error) {
-    console.error('Error seeding flights:', error);
+    console.error('Error creating tables and seeding data:', error);
   }
 };
 

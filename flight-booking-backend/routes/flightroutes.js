@@ -34,19 +34,19 @@ module.exports = () => {
       // Step 3: Add additional filters based on query parameters
       if (name) {
         query += bookedNames.length > 0 ? ' AND' : ' WHERE';
-        query += ' name LIKE :name';
+        query += ' name ILIKE :name';  // Use ILIKE for case-insensitive search
         queryParams.name = `%${name}%`;
       }
 
       if (departure) {
         query += bookedNames.length > 0 || name ? ' AND' : ' WHERE';
-        query += ' departure LIKE :departure';
+        query += ' departure ILIKE :departure';  // Use ILIKE for case-insensitive search
         queryParams.departure = `%${departure}%`;
       }
 
       if (destination) {
         query += bookedNames.length > 0 || name || departure ? ' AND' : ' WHERE';
-        query += ' destination LIKE :destination';
+        query += ' destination ILIKE :destination';  // Use ILIKE for case-insensitive search
         queryParams.destination = `%${destination}%`;
       }
 
