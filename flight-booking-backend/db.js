@@ -3,7 +3,7 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
 // Use the DATABASE_URL environment variable (which you will set in the .env file)
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize('postgres://myuser:mysecurepassword@postgres:5432/flightbooking', {
   dialect: 'postgres',
   logging: false,
   dialectOptions: {
