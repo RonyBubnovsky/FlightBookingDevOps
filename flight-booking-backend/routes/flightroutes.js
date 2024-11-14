@@ -14,7 +14,7 @@ module.exports = () => {
       // Step 1: Attempt to get all booked flight names
       try {
         const bookedFlights = await sequelize.query(
-          'SELECT DISTINCT bookedName FROM bookings',
+          'SELECT DISTINCT "bookedName" FROM bookings', // Double quotes around bookedName
           { type: Sequelize.QueryTypes.SELECT }
         );
         bookedNames = bookedFlights.map(bf => bf.bookedName);
@@ -27,38 +27,38 @@ module.exports = () => {
       const queryParams = {};
 
       if (bookedNames.length > 0) {
-        query += ' WHERE name NOT IN (:bookedNames)';
+        query += ' WHERE "name" NOT IN (:bookedNames)'; // Double quotes around "name"
         queryParams.bookedNames = bookedNames;
       }
 
       // Step 3: Add additional filters based on query parameters
       if (name) {
         query += bookedNames.length > 0 ? ' AND' : ' WHERE';
-        query += ' name ILIKE :name';  // Use ILIKE for case-insensitive search
+        query += ' "name" ILIKE :name';  // Double quotes around "name"
         queryParams.name = `%${name}%`;
       }
 
       if (departure) {
         query += bookedNames.length > 0 || name ? ' AND' : ' WHERE';
-        query += ' departure ILIKE :departure';  // Use ILIKE for case-insensitive search
+        query += ' "departure" ILIKE :departure';  // Double quotes around "departure"
         queryParams.departure = `%${departure}%`;
       }
 
       if (destination) {
         query += bookedNames.length > 0 || name || departure ? ' AND' : ' WHERE';
-        query += ' destination ILIKE :destination';  // Use ILIKE for case-insensitive search
+        query += ' "destination" ILIKE :destination';  // Double quotes around "destination"
         queryParams.destination = `%${destination}%`;
       }
 
       if (minPrice) {
         if (maxPrice) {
           query += bookedNames.length > 0 || name || departure || destination ? ' AND' : ' WHERE';
-          query += ' price BETWEEN :minPrice AND :maxPrice';
+          query += ' "price" BETWEEN :minPrice AND :maxPrice';  // Double quotes around "price"
           queryParams.minPrice = minPrice;
           queryParams.maxPrice = maxPrice;
         } else {
           query += bookedNames.length > 0 || name || departure || destination ? ' AND' : ' WHERE';
-          query += ' price >= :minPrice';
+          query += ' "price" >= :minPrice';  // Double quotes around "price"
           queryParams.minPrice = minPrice;
         }
       }
