@@ -122,7 +122,7 @@ The CI pipeline helps maintain code quality by:
 
 ### Branch Strategy
 
-The main branche is protected - changes must be made through pull requests that pass CI checks.
+The main branch is protected - changes must be made through pull requests that pass CI checks.
 
 ## Contributing
 
