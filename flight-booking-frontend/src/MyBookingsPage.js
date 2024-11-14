@@ -3,7 +3,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 
 // Define the base URL for API requests
-const url = 'https://flight-booking-server-n175.onrender.com/';
+const url = 'http://localhost:3001/';
 
 const MyBookingsPage = () => {
   const [bookings, setBookings] = useState([]);
