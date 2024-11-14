@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: flight-backend
+    env: docker
+    plan: free # Uses the free plan
+    dockerfilePath: ./Dockerfile
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        value: postgres://myuser:mysecurepassword@flight-database.internal:5432/flightbooking
+
+  - type: database
+    name: flight-database
+    plan: free # Uses the free plan for the database as well
+    databaseName: flightbooking
+    user: myuser
+    password: mysecurepassword
+    engine: postgresql
+    version: 15
