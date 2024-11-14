@@ -1,5 +1,5 @@
-// Import dotenv to load environment variables
-require('dotenv').config();
+
+
 const { Sequelize } = require('sequelize');
 
 // Use the DATABASE_URL environment variable (which you will set in the .env file)

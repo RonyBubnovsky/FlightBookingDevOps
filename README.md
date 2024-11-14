@@ -1,23 +1,22 @@
-# Flight Booking App with DevOps Integration!
+# Flight Booking App with DevOps Integration
 
-This project is a Flight Booking App that allows users to search for flights, book flights, and manage their bookings. It features the integration of DevOps concepts such as Docker containers and CI/CD, providing a smooth development and deployment process.
+This project is a Flight Booking App that allows users to search for flights, book flights, and manage their bookings. It features the integration of DevOps concepts such as Docker containers and CI, providing a smooth development process.
 
 ## Features
 
 - **Flight Search**: Users can search for flights based on name, departure city, and destination city.
 - **Booking**: Users can book available flights, and booked flights will be removed from the available flights list.
 - **My Bookings**: Users can view all of their booked flights, with the ability to cancel bookings.
-- **Docker Integration**: Both the backend (Node.js) and MongoDB are containerized using Docker, and the backend uses Docker Compose for management.
+- **Docker Integration**: Both the backend (Node.js) and PostgreSQL are containerized using Docker, and the backend uses Docker Compose for management.
 - **Automated Testing**: End-to-end testing using Cypress, integrated into the CI/CD pipeline
 
 ## Tech Stack
 
 - **Frontend**: React
 - **Backend**: Node.js, Express
-- **Database**: MongoDB (in Docker container)
-- **Testing**: Cypress
+- **Database**: PostgreSQL (in Docker container)
+- **Testing**: Frontend - Cypress, Backend - Jest
 - **DevOps Concepts**: Docker, Docker Compose, CI/CD
-- **Deployment**: Render
 
 ## Requirements
 
@@ -33,16 +32,9 @@ git clone https://github.com/RonyBubnovsky/FlightBookingDevOps
 cd FlightBookingDevOps
 ```
 
-### 2. Install dependencies
+### 2. Install frontend dependencies
 
-First, install the dependencies for both the frontend and the backend.
-
-**Backend (Node.js + Express)**
-Navigate to the backend directory and run:
-
-```bash
-npm install
-```
+First, install the dependencies the frontend.
 
 **Frontend (React)**
 Navigate to the frontend directory and run:
@@ -62,7 +54,7 @@ To start the backend using Docker, run the following command inside the backend 
 docker-compose up --build
 ```
 
-This will build and start both the backend and MongoDB containers. Docker Compose ensures that the MongoDB container and the backend are linked and run correctly.
+This will build and start both the backend and PostgreSQL containers. Docker Compose ensures that the PostgreSQL container and the backend are linked and run correctly.
 
 **Frontend**
 After the backend is up and running, navigate to the frontend directory and run:
@@ -95,14 +87,14 @@ This will open the Cypress Test Runner, where you can run individual tests or th
 
 ### 7. Docker Considerations
 
-Make sure Docker Desktop is running when you start the backend, as it uses Docker containers for both the Node.js server and MongoDB.
+Make sure Docker Desktop is running when you start the backend, as it uses Docker containers for both the Node.js server and PostgreSQL.
 
 ## DevOps Features
 
 ### Docker
 
-- The backend and MongoDB are both containerized using Docker. This ensures a consistent environment across different stages of development and production.
-- Docker Compose is used to manage the services (backend and MongoDB) in a single command.
+- The backend and PostgreSQL are both containerized using Docker. This ensures a consistent environment across different stages of development and production.
+- Docker Compose is used to manage the services (backend and PostgeSQL) in a single command.
 
 ### Testing
 
@@ -112,52 +104,26 @@ Make sure Docker Desktop is running when you start the backend, as it uses Docke
   - Booking process
   - Booking management
   - Error handling
-- Tests are automatically run as part of the CI/CD pipeline
+- Tests are automatically run as part of the CI pipeline
 
 ### CI/CD
 
-The project is integrated with Continuous Integration (CI) and Continuous Deployment (CD) pipelines. This ensures that any code changes automatically trigger:
+The project is integrated with Continuous Integration (CI) pipeline. This ensures that any code changes automatically trigger:
 
 1. Running the Cypress test suite
 2. Building Docker containers
-3. Deploying to staging/production environments if all tests pass
 
-The CI/CD pipeline helps maintain code quality by:
+The CI pipeline helps maintain code quality by:
 
-- Ensuring all tests pass before deployment
-- Maintaining consistent build and deployment processes
-- Automating the testing and deployment workflow
+- Ensuring all tests pass
+- Maintaining consistent build
+- Automating the testing
 - Providing quick feedback on code changes
-
-#### Deployment Process
-
-- The application follows a branch-based deployment strategy
-- The `production` branch serves as both the main development branch and the deployment branch
-- All changes pushed to the `production` branch are automatically deployed to Render
-- The deployment process is triggered automatically when changes are pushed to the production branch
-- Render handles the build and deployment process, ensuring zero-downtime deployments
 
 ### Branch Strategy
 
-- `production`: Main development branch that triggers automatic deployments to Render
-- `stage`: Mirror of the production branch but without deployment triggers, used for testing and staging environments
-- Both `production` and `stage` branches are protected:
-  - Direct pushes to these branches are not allowed
-  - All changes must be made through pull requests
-  - Pull requests must pass CI checks before they can be merged
-  - Code review is required before merging
-- Feature branches should be created for new development
-- Process for adding new features:
-  1. Create a new feature branch
-  2. Develop and test your changes
-  3. Create a pull request targeting either `production` or `stage`
-  4. Wait for CI checks to pass
-  5. Obtain code review approval
-  6. Once approved and CI passes, changes can be merged
-  7. For `production` branch merges, Render will automatically deploy the changes
+The main and stage branches are protected - changes must be made through pull requests that pass CI checks.
 
 ## Contributing
 
 Feel free to fork this project and create pull requests. Contributions are welcome!
-
-Feel free to fork this project and create pull requests. Contributions are welcome!!

@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('./index'); // Adjust the path to your main app file
 const { Client } = require('pg');
-require('dotenv').config(); // Load environment variables from .env file
+
 
 // Use DATABASE_URL directly
 const client = new Client({
