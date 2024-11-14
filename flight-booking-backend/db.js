@@ -1,6 +1,8 @@
+
+
 const { Sequelize } = require('sequelize');
 
-// Directly using the raw connection string
+// Use the DATABASE_URL environment variable (which you will set in the .env file)
 const sequelize = new Sequelize('postgres://myuser:mysecurepassword@postgres:5432/flightbooking', {
   dialect: 'postgres',
   logging: false,

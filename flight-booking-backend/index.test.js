@@ -2,13 +2,11 @@ const request = require('supertest');
 const app = require('./index'); // Adjust the path to your main app file
 const { Client } = require('pg');
 
-// Create a PostgreSQL client instance
+
+// Use DATABASE_URL directly
 const client = new Client({
-  user: 'myuser',
-  host: 'localhost',
-  database: 'flightbooking',
-  password: 'mysecurepassword',
-  port: 5432,
+  connectionString: 'postgres://myuser:mysecurepassword@localhost:5432/flightbooking', // Local PostgreSQL connection
+  ssl: false,  // Disable SSL for local connections
 });
 
 describe('Flight API', () => {
