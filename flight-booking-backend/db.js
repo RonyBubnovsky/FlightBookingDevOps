@@ -1,7 +1,5 @@
 
-
 const { Sequelize } = require('sequelize');
-
 
 const sequelize = new Sequelize('postgres://myuser:mysecurepassword@postgres:5432/flightbooking', {
   dialect: 'postgres',
