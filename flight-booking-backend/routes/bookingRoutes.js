@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Booking = require('../models/Booking'); // Import the Booking model
+const { sequelize, Sequelize } = require('../db'); // Assuming you have sequelize setup here
 
 module.exports = () => {
   // POST route for creating a booking
@@ -8,14 +8,22 @@ module.exports = () => {
     const { bookedName, bookedDeparture, bookedDestination, bookedPrice } = req.body;
 
     try {
-      // Create a new booking using Sequelize ORM
-      const newBooking = await Booking.create({
-        bookedName,
-        bookedDeparture,
-        bookedDestination,
-        bookedPrice
-      });
+      // Insert a new booking using raw SQL query
+      const result = await sequelize.query(
+        `INSERT INTO bookings ("bookedName", "bookedDeparture", "bookedDestination", "bookedPrice")
+         VALUES (:bookedName, :bookedDeparture, :bookedDestination, :bookedPrice) RETURNING *`,
+        {
+          replacements: {
+            bookedName,
+            bookedDeparture,
+            bookedDestination,
+            bookedPrice,
+          },
+          type: Sequelize.QueryTypes.INSERT
+        }
+      );
 
+      const newBooking = result[0][0]; // Since we're using `RETURNING *`, the inserted booking is returned
       res.status(201).json({
         message: 'Flight booked successfully!',
         booking: newBooking,
@@ -29,7 +37,11 @@ module.exports = () => {
   // GET route to get all bookings
   router.get('/', async (req, res) => {
     try {
-      const bookings = await Booking.findAll();
+      // Fetch all bookings using a raw SQL query
+      const bookings = await sequelize.query(
+        'SELECT "id", "bookedName", "bookedDeparture", "bookedDestination", "bookedPrice" FROM bookings',
+        { type: Sequelize.QueryTypes.SELECT }
+      );
       res.status(200).json(bookings);
     } catch (error) {
       console.error('Error fetching bookings:', error);
@@ -42,11 +54,17 @@ module.exports = () => {
     const flightName = req.params.flightName;
 
     try {
-      const deletedBooking = await Booking.destroy({
-        where: { bookedName: flightName },
-      });
+      // Delete booking by flight name using raw SQL query
+      const result = await sequelize.query(
+        'DELETE FROM bookings WHERE "bookedName" = :flightName RETURNING *',
+        {
+          replacements: { flightName },
+          type: Sequelize.QueryTypes.DELETE
+        }
+      );
 
-      if (deletedBooking === 0) {
+      // If no rows are affected, the booking does not exist
+      if (result[0].length === 0) {
         return res.status(404).json({ message: 'Booking not found' });
       }
 
