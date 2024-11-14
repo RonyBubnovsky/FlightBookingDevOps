@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../db'); // Import the Sequelize instance
+const { sequelize, Sequelize } = require('../db'); // Import the Sequelize instance
 
 // Define the Booking model
 const Booking = sequelize.define('Booking', {

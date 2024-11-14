@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const flightRoutes = require('./routes/flightroutes');
 const bookingRoutes = require('./routes/bookingRoutes');
-const sequelize = require('./db'); // Sequelize import
+const { sequelize, Sequelize } = require('./db'); // Sequelize import
 const seedFlights = require('./seedFlights'); // Import seedFlights
 
 const app = express();
