@@ -5,7 +5,7 @@ require('dotenv').config(); // Load environment variables from .env file
 
 // Use DATABASE_URL directly
 const client = new Client({
-  connectionString: process.env.DATABASE_URL,  // Use DATABASE_URL for full connection string
+  connectionString: 'postgres://myuser:mysecurepassword@postgres:5432/flightbooking',  // Use DATABASE_URL for full connection string
   ssl: {
     rejectUnauthorized: false,  // Required for cloud-hosted databases (e.g., Render)
   }

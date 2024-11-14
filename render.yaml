@@ -10,4 +10,4 @@ services:
       - key: PORT
         value: 3001
       - key: DATABASE_URL
-        value: postgres://myuser:mysecurepassword@flight-database.internal:5432/flightbooking
+        value: postgresql://myuser:3SR4uDFCHgu1yGPaCrkE3y1kPQEX6mpL@dpg-cspr0artq21c73915jm0-a.oregon-postgres.render.com/flightbooking_a26i
