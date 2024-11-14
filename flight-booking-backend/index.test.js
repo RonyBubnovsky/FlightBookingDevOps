@@ -5,10 +5,8 @@ require('dotenv').config(); // Load environment variables from .env file
 
 // Use DATABASE_URL directly
 const client = new Client({
-  connectionString: 'postgres://myuser:mysecurepassword@postgres:5432/flightbooking',  // Use DATABASE_URL for full connection string
-  ssl: {
-    rejectUnauthorized: false,  // Required for cloud-hosted databases (e.g., Render)
-  }
+  connectionString: 'postgres://myuser:mysecurepassword@localhost:5432/flightbooking', // Local PostgreSQL connection
+  ssl: false,  // Disable SSL for local connections
 });
 
 describe('Flight API', () => {

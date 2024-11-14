@@ -6,12 +6,6 @@ const { Sequelize } = require('sequelize');
 const sequelize = new Sequelize('postgres://myuser:mysecurepassword@postgres:5432/flightbooking', {
   dialect: 'postgres',
   logging: false,
-  dialectOptions: {
-    ssl: {
-      require: true, // Ensure SSL is required
-      rejectUnauthorized: false, // Disable certificate verification for remote connections
-    },
-  },
 });
 
 async function connectDB() {
