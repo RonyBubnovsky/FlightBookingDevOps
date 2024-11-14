@@ -5,11 +5,11 @@ on:
   push:
     branches:
       - stage
-      - production
+      - main
   pull_request:
     branches:
       - stage
-      - production
+      - main
 
 jobs:
   test:
