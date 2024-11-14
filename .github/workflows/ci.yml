@@ -4,11 +4,11 @@ name: Flight Booking CI Pipeline
 on:
   push:
     branches:
-      - stage
+      - staging
       - main
   pull_request:
     branches:
-      - stage
+      - staging
       - main
 
 jobs:
