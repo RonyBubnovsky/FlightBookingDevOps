@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import FlightsPage from './FlightsPage';
 import MyBookingsPage from './MyBookingsPage';
-import axios from 'axios';
 import backgroundImage from './background.jpg';
 
 const App = () => {

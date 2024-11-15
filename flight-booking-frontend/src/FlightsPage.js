@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // Don't forget to import useCallback
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
@@ -15,11 +15,10 @@ const FlightsPage = () => {
     maxPrice: ''
   });
 
-  // Fetch flights based on the search query
-  const fetchFlights = () => {
+  
+  const fetchFlights = useCallback(() => {
     const { name, departure, destination, minPrice, maxPrice } = searchQuery;
 
-    // Convert the min and max prices to numbers (if they are not empty)
     const min = minPrice ? parseFloat(minPrice) : undefined;
     const max = maxPrice ? parseFloat(maxPrice) : undefined;
 
@@ -32,12 +31,12 @@ const FlightsPage = () => {
       .catch(error => {
         console.error("There was an error fetching flights!", error);
       });
-  };
+  }, [searchQuery]);
 
-  // Fetch all flights initially or based on the search query
+  // Fetch flights when searchQuery changes
   useEffect(() => {
     fetchFlights();
-  }, [searchQuery]); // Re-fetch flights when searchQuery changes
+  }, [fetchFlights]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -88,7 +87,6 @@ const FlightsPage = () => {
 
   return (
     <div className="flex flex-col items-center">
-
       {/* Headline */}
       <h1 
         className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
@@ -160,8 +158,12 @@ const FlightsPage = () => {
             <div className="flex justify-between items-center">
               <div>
                 <h3 className="text-xl font-semibold">{flight.name}</h3>
-                <p className="text-gray-600">{flight.departure} to {flight.destination}</p>
-                <div className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md inline-block mt-2">
+                <p className="text-gray-600" data-cy="departure_destination">
+  {flight.departure} to {flight.destination}
+</p>
+                <div
+                data-cy="flight_price" 
+                className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md inline-block mt-2">
                   ${flight.price}
                 </div>
               </div>
