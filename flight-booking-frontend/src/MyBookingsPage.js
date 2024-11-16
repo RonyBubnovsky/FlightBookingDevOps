@@ -95,6 +95,7 @@ const MyBookingsPage = () => {
         <button
           onClick={cancelAllBookings}
           className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md shadow-md mb-6 transition duration-300 transform hover:scale-105"
+          data-cy="cancelAllBookings_button"
         >
           Cancel All Bookings
         </button>
@@ -118,6 +119,7 @@ const MyBookingsPage = () => {
                 <button
                   onClick={() => cancelBooking(booking.bookedName)}
                   className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md shadow-md transition duration-300 transform hover:scale-105"
+                  data-cy="cancelflight_button"
                 >
                   Cancel Booking
                 </button>

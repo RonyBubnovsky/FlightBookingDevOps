@@ -8,13 +8,13 @@ const url = 'http://localhost:3001/';
 // The main component for displaying flights
 const FlightsPage = () => {
   // State hooks for storing flights and search query
-  const [flights, setFlights] = useState([]);
+  const [flights, setFlights] = useState([]); 
   const [searchQuery, setSearchQuery] = useState({ 
     name: '', 
     departure: '', 
     destination: '', 
     minPrice: '', 
-    maxPrice: ''
+    maxPrice: '' 
   });
 
   // Fetch flights from the server with the current search query
@@ -176,10 +176,18 @@ const FlightsPage = () => {
                 <h3 className="text-2xl font-semibold text-gray-800">{flight.name}</h3>
                 
                 {/* Departure and Destination */}
-                <p className="text-lg text-gray-600">{flight.departure} to {flight.destination}</p>
+                <p 
+                  className="text-lg text-gray-600"
+                  data-cy="departure_destination"
+                >
+                  {flight.departure} to {flight.destination}
+                </p>
                 
                 {/* Flight Price */}
-                <div className="mt-2 bg-teal-100 text-teal-700 font-semibold px-3 py-1 rounded-md inline-block">
+                <div 
+                  className="mt-2 bg-teal-100 text-teal-700 font-semibold px-3 py-1 rounded-md inline-block"
+                  data-cy="flight_price"
+                >
                   ${flight.price}
                 </div>
               </div>
@@ -187,6 +195,7 @@ const FlightsPage = () => {
               <button 
                 onClick={() => handleBookFlight(flight)} 
                 className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-md shadow-md transition duration-300 transform hover:scale-105"
+                data-cy="bookflight_button"
               >
                 Book Flight
               </button>
