@@ -28,11 +28,26 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* ✈️ Plane Animation Keyframes */
+@keyframes flight {
+  0% {
+    left: -10%;
+    transform: translateY(0) rotate(0deg);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: translateY(-20px) rotate(10deg);
   }
+  100% {
+    left: 110%;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* ✈️ Plane Animation Class */
+.animate-flight {
+  position: absolute;
+  top: 20%; /* Adjust this value to position the plane vertically */
+  animation: flight 10s linear infinite;
+  font-size: 3rem; /* Adjust the size of the plane icon */
+  color: #61dafb; /* Plane color */
 }

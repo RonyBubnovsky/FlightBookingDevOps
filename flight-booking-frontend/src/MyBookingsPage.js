@@ -29,7 +29,7 @@ const MyBookingsPage = () => {
         });
 
         // Remove canceled flight from the UI
-        setBookings(bookings.filter(booking => booking.bookedName !== flightName)); 
+        setBookings(bookings.filter(booking => booking.bookedName !== flightName));
       })
       .catch(error => {
         console.error("There was an error canceling the booking:", error);
@@ -45,37 +45,79 @@ const MyBookingsPage = () => {
       });
   };
 
+  const cancelAllBookings = () => {
+    // Loop through each booking and cancel it
+    const cancelPromises = bookings.map(booking =>
+      axios.delete(`${url}api/bookings/cancel/${booking.bookedName}`)
+    );
+
+    // Wait for all cancellations to complete
+    Promise.all(cancelPromises)
+      .then(() => {
+        // Show success alert for canceling all bookings
+        Swal.fire({
+          title: 'All Bookings Canceled',
+          text: 'All your bookings have been successfully canceled.',
+          icon: 'success',
+          confirmButtonText: 'OK',
+          timer: 1500,
+          timerProgressBar: true,
+        });
+
+        // Clear all bookings from the UI
+        setBookings([]);
+      })
+      .catch(error => {
+        console.error("There was an error canceling all bookings:", error);
+        // Show error alert for canceling all bookings
+        Swal.fire({
+          title: 'Error',
+          text: 'There was an error canceling all your bookings. Please try again later.',
+          icon: 'error',
+          confirmButtonText: 'OK',
+          timer: 2000,
+          timerProgressBar: true,
+        });
+      });
+  };
+
   return (
-    <div>
-      {/* Updated Headline with icon outside the gradient text */}
-      <h1 
-        className="text-4xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
-                  animate-pulse tracking-wide text-center py-4"
-      >
+    <div className="flex flex-col items-center min-h-screen py-10 bg-transparent">
+      {/* Enhanced Header with Icons */}
+      <h1 className="text-5xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-purple-500 to-pink-500 animate-pulse text-center py-4">
         <span className="inline-block text-white">📅</span> {/* Icon separate from gradient */}
         My Flights
         <span className="inline-block text-white">📅</span> {/* Icon separate from gradient */}
       </h1>
 
+      {/* Button to Cancel All Bookings */}
+      {bookings.length > 0 && (
+        <button
+          onClick={cancelAllBookings}
+          className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md shadow-md mb-6 transition duration-300 transform hover:scale-105"
+        >
+          Cancel All Bookings
+        </button>
+      )}
+
       {/* If there are no bookings, display a message */}
       {bookings.length === 0 ? (
-        <p className="text-center text-xl text-gray-600">You don't currently have anything booked.</p>
+        <p className="text-center text-xl text-gray-600 mb-8">You don't currently have anything booked.</p>
       ) : (
-        <ul>
+        <ul className="w-full max-w-3xl space-y-6">
           {bookings.map(booking => (
-            <li key={booking._id} className="bg-white p-4 rounded-lg shadow-lg mb-4">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h3 className="text-xl font-semibold">{booking.bookedName}</h3>
-                  <p className="text-gray-600">{booking.bookedDeparture} to {booking.bookedDestination}</p>
-                  <div className="bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-md inline-block mt-2">
+            <li key={booking._id} className="w-full bg-white shadow-xl rounded-lg p-6 transition-transform transform hover:scale-105 duration-300 ease-in-out">
+              <div className="flex justify-between items-center w-full">
+                <div className="flex-1">
+                  <h3 className="text-2xl font-semibold text-gray-800">{booking.bookedName}</h3>
+                  <p className="text-lg text-gray-600">{booking.bookedDeparture} to {booking.bookedDestination}</p>
+                  <div className="mt-2 bg-teal-100 text-teal-700 font-semibold px-3 py-1 rounded-md inline-block">
                     ${booking.bookedPrice}
                   </div>
                 </div>
-                <button 
-                  onClick={() => cancelBooking(booking.bookedName)} 
-                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg"
-                  data-cy="cancelflight_button"
+                <button
+                  onClick={() => cancelBooking(booking.bookedName)}
+                  className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-md shadow-md transition duration-300 transform hover:scale-105"
                 >
                   Cancel Booking
                 </button>
