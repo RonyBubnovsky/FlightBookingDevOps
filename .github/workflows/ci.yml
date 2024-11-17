@@ -47,7 +47,7 @@ jobs:
       # Step 6: Cleanup previous containers (stop and remove existing containers)
       - name: Cleanup previous containers
         run: |
-          docker-compose down || true
+          docker-compose -f ./docker-compose.yml down || true
           docker ps -a -q | xargs docker stop || true
           docker ps -a -q | xargs docker rm || true
 
@@ -57,10 +57,9 @@ jobs:
 
       # Step 8: Build and Run Docker Compose for backend and PostgreSQL
       - name: Build and Run Backend with Docker Compose
-        working-directory: ./flight-booking-backend
         run: |
-          docker-compose down || true
-          docker-compose up -d --build
+          docker-compose -f ./docker-compose.yml down || true
+          docker-compose -f ./docker-compose.yml up -d --build
           chmod +x ./wait-for-it.sh
           ./wait-for-it.sh localhost 3001
 
@@ -87,7 +86,7 @@ jobs:
       # Step 13: Tear down Docker services
       - name: Tear Down Docker Compose
         working-directory: ./flight-booking-backend
-        run: docker-compose down
+        run: docker-compose -f ./docker-compose.yml down
 
       # Step 14: Trigger Render Deployment for Backend (Replace with your webhook URL)
       - name: Trigger Backend Deployment on Render

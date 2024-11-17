@@ -1,8 +1,8 @@
 services:
   backend:
     build:
-      context: ./flight-booking-backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./flight-booking-backend/Dockerfile
     ports:
       - "3001:3001"
     environment:
