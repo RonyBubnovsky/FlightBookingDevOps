@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "jest --forceExit"
+    "test": "jest --forceExit",
+    "docker_build": "docker compose up --build"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -18,7 +18,7 @@ services:
       POSTGRES_PASSWORD: mysecurepassword
       POSTGRES_DB: flightbooking
     ports:
-      - "5433:5432"
+      - "5432:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "myuser", "-d", "flightbooking"]
       interval: 10s

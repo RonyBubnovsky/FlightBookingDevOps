@@ -1,7 +1,8 @@
 const request = require('supertest');
-const app = require('../index'); // Adjust the path to your Express app
+const app = require('../index'); // path to Express app
 const { sequelize, Sequelize } = require('../localdb'); // Sequelize instance
-const { Booking } = require('../models/Booking'); // Your Booking model
+const Booking = require('../models/Booking'); // Your Booking model
+
 
 jest.setTimeout(10000); // Increase the default timeout to 10 seconds
 
