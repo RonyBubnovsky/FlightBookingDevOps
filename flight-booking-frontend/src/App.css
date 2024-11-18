@@ -1,18 +1,22 @@
+/* Style for the main App container */
 .App {
   text-align: center;
 }
 
+/* Style for the App logo */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
+/* Add an animation to the logo */
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
+/* Style for the App header */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -24,9 +28,11 @@
   color: white;
 }
 
+/* Style for links inside the App */
 .App-link {
   color: #61dafb;
 }
+
 
 /* ✈️ Plane Animation Keyframes */
 @keyframes flight {
