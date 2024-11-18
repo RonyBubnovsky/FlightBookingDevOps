@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../index'); // Adjust the path to your Express app
 const { sequelize, Sequelize } = require('../localdb'); // Sequelize instance
 
-jest.setTimeout(10000); // Increase the default timeout to 10 seconds
+jest.setTimeout(10000); // Default timeout 10 seconds
 
 // Set up the PostgreSQL connection to localhost
 beforeAll(async () => {

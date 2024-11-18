@@ -4,7 +4,7 @@ const { sequelize, Sequelize } = require('../localdb'); // Sequelize instance
 const Booking = require('../models/Booking'); // Your Booking model
 
 
-jest.setTimeout(10000); // Increase the default timeout to 10 seconds
+jest.setTimeout(10000); // Default timeout 10 seconds
 
 // Set up the PostgreSQL connection to localhost
 beforeAll(async () => {

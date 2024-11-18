@@ -6,9 +6,9 @@ const sequelize = new Sequelize('flightbooking', 'myuser', 'mysecurepassword', {
   host: 'localhost', // Database host (localhost for local Postgres)
   dialect: 'postgres', // Using PostgreSQL as the database dialect
   port: 5432, // Default PostgreSQL port
-  logging: false, // Disable logging (optional, can be set to true for debugging)
+  logging: false, // Disable logging
   define: {
-    timestamps: false, // Disable automatic timestamps if you don't want them
+    timestamps: false, // Disable automatic timestamps
   },
 });
 
