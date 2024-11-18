@@ -84,7 +84,12 @@ jobs:
       # Step 12: Run backend tests directly within the backend container
       - name: Run Backend Tests
         run: |
-          docker-compose exec backend npm run test-docker
+          # Make sure containers are running
+          docker-compose up -d
+          # Wait a bit for services to be ready (optional but recommended)
+          sleep 10
+          # Run tests with -T flag
+          docker-compose exec -T backend npm run test-docker
 
       # Step 13: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests
