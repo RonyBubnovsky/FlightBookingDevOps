@@ -4,7 +4,7 @@ import FlightsPage from './FlightsPage';
 import MyBookingsPage from './MyBookingsPage';
 import { FaPlane, FaHome, FaBook } from 'react-icons/fa';
 import backgroundImage from './background.jpg';
-import './App.css'; // Importing the CSS file for styles
+import './App.css';
 
 // Component for the animated plane flying across the screen
 const AnimatedPlane = () => {
