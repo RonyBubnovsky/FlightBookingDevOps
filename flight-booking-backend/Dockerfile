@@ -1,23 +1,20 @@
 # Use an official Node.js runtime as a parent image
 FROM node:20-alpine
 
-# Set the working directory in the container
+# Set the working directory in the container (will be used by default for all commands)
 WORKDIR /usr/src/app
 
-# Install curl for healthcheck
-RUN apk add --no-cache curl
+# Copy package.json and package-lock.json first to leverage caching
+COPY package.json package-lock.json ./
 
-# Copy package.json and package-lock.json
-COPY package*.json ./ 
-
-# Install project dependencies
+# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
-COPY . .
+# Copy the src directory to the container (assuming src is in the root folder)
+COPY ./src ./src
 
-# Expose the port the app runs on
+# Expose the backend port
 EXPOSE 3001
 
-# Command to run the app in development mode
+# Change directory to src and run npm start
 CMD ["npm", "start"]

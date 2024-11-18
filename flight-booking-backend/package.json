@@ -4,8 +4,8 @@
   "description": "Backend for the flight booking app",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
     "test": "jest --forceExit",
     "docker_build": "docker compose up --build",
     "test-docker": "DB_HOST=postgres jest --runInBand --passWithNoTests"
