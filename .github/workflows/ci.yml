@@ -77,6 +77,13 @@ jobs:
         run: npm start &
 
       # Step 11: Run backend tests directly within the backend container
+      - name: Wait for backend to be ready
+        run: |
+          until curl -s http://localhost:3001/health; do
+            echo "Waiting for backend to be ready...";
+            sleep 5;
+          done
+
       - name: Run Backend Tests
         working-directory: ./flight-booking-backend
         run: |
