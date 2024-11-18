@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios'; 
 import Swal from 'sweetalert2'; 
 
-// Set the base URL for the API
+// Base URL for the API
 const url = 'http://localhost:3001/';
 
 // The main component for displaying flights

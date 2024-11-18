@@ -81,10 +81,11 @@ jobs:
         working-directory: ./flight-booking-frontend
         run: npm start &
 
-      # Step 12: Run backend tests
+      # Step 12: Run backend tests directly within the backend container
       - name: Run Backend Tests
         working-directory: ./flight-booking-backend
-        run: npm test
+        run: |
+          docker-compose exec -T backend npm run test-docker
 
       # Step 13: Run Cypress tests (frontend testing)
       - name: Run Cypress Tests

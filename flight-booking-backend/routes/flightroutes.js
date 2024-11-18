@@ -3,79 +3,76 @@ const router = express.Router();
 const { sequelize, Sequelize } = require('../db'); // Assuming you have sequelize setup here
 
 module.exports = () => {
-  // Fetch available flights, excluding those that are already booked
+  // Define a route to fetch available flights, excluding booked ones and applying filters
   router.get('/', async (req, res) => {
     try {
-      // Extract search parameters from the query string
-      const { name, departure, destination, minPrice, maxPrice } = req.query;
-
+      const { name, departure, destination, minPrice, maxPrice } = req.query; // Extract filters from the request query
       let bookedNames = [];
-      
-      // Step 1: Attempt to get all booked flight names
+
+      // Fetch the names of all booked flights from the bookings table
       try {
         const bookedFlights = await sequelize.query(
-          'SELECT DISTINCT "bookedName" FROM bookings', // Double quotes around bookedName
+          'SELECT DISTINCT "bookedName" FROM bookings',
           { type: Sequelize.QueryTypes.SELECT }
         );
         bookedNames = bookedFlights.map(bf => bf.bookedName);
       } catch (err) {
-        console.warn('Could not fetch booked names, returning all flights:', err.message);
+        console.warn('Failed to fetch booked flight names, returning all flights:', err.message);
       }
 
-      // Step 2: Build the base SQL query to exclude booked flights if `bookedNames` are found
+      // Construct the base SQL query, excluding booked flights if any exist
       let query = 'SELECT * FROM flights';
       const queryParams = {};
 
       if (bookedNames.length > 0) {
-        query += ' WHERE "name" NOT IN (:bookedNames)'; // Double quotes around "name"
+        query += ' WHERE "name" NOT IN (:bookedNames)';
         queryParams.bookedNames = bookedNames;
       }
 
-      // Step 3: Add additional filters based on query parameters
+      // Append filters to the SQL query based on query parameters
       if (name) {
         query += bookedNames.length > 0 ? ' AND' : ' WHERE';
-        query += ' "name" ILIKE :name';  // Double quotes around "name"
+        query += ' "name" ILIKE :name';
         queryParams.name = `%${name}%`;
       }
 
       if (departure) {
         query += bookedNames.length > 0 || name ? ' AND' : ' WHERE';
-        query += ' "departure" ILIKE :departure';  // Double quotes around "departure"
+        query += ' "departure" ILIKE :departure';
         queryParams.departure = `%${departure}%`;
       }
 
       if (destination) {
         query += bookedNames.length > 0 || name || departure ? ' AND' : ' WHERE';
-        query += ' "destination" ILIKE :destination';  // Double quotes around "destination"
+        query += ' "destination" ILIKE :destination';
         queryParams.destination = `%${destination}%`;
       }
 
       if (minPrice) {
         if (maxPrice) {
           query += bookedNames.length > 0 || name || departure || destination ? ' AND' : ' WHERE';
-          query += ' "price" BETWEEN :minPrice AND :maxPrice';  // Double quotes around "price"
+          query += ' "price" BETWEEN :minPrice AND :maxPrice';
           queryParams.minPrice = minPrice;
           queryParams.maxPrice = maxPrice;
         } else {
           query += bookedNames.length > 0 || name || departure || destination ? ' AND' : ' WHERE';
-          query += ' "price" >= :minPrice';  // Double quotes around "price"
+          query += ' "price" >= :minPrice';
           queryParams.minPrice = minPrice;
         }
       }
 
-      // Step 4: Execute the query with Sequelize
+      // Execute the query and fetch available flights
       const availableFlights = await sequelize.query(query, {
         replacements: queryParams,
         type: Sequelize.QueryTypes.SELECT,
       });
 
-      // Step 5: Send available flights as the response
-      res.json(availableFlights);
+      res.json(availableFlights); // Respond with the list of available flights
     } catch (error) {
       console.error('Error fetching available flights:', error);
-      res.status(500).json({ message: 'Server error' });
+      res.status(500).json({ message: 'Server error' }); // Handle errors with a 500 response
     }
   });
 
-  return router;
+  return router; // Export the router for use in the application
 };

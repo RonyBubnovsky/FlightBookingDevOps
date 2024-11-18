@@ -5,7 +5,7 @@ describe('Search Flights', () => {
     // Step 1: Visit the flights page
     cy.visit('http://localhost:3000/flights');
     
-    // Step 2: Type a specific flight name into the search input (e.g., 'American Airlines AA100')
+    // Step 2: Type a specific flight name into the search input (in our case 'American Airlines AA100')
     cy.get('input[name="name"]').type('American Airlines AA100');
     
     // Step 3: Submit the search form
@@ -20,7 +20,7 @@ describe('Search Flights', () => {
     // Step 1: Visit the flights page
     cy.visit('http://localhost:3000/flights');
     
-    // Step 2: Type a specific departure city (e.g., 'New York') into the departure city input
+    // Step 2: Type a specific departure city (in our case 'New York') into the departure city input
     cy.get('input[name="departure"]').type('New York');
     
     // Step 3: Submit the search form
@@ -38,7 +38,7 @@ describe('Search Flights', () => {
     // Step 1: Visit the flights page
     cy.visit('http://localhost:3000/flights');
     
-    // Step 2: Type a specific destination city (e.g., 'London') into the destination city input
+    // Step 2: Type a specific destination city (in our case 'London') into the destination city input
     cy.get('input[name="destination"]').type('London'); // Changed destination city to London
     
     // Step 3: Submit the search form

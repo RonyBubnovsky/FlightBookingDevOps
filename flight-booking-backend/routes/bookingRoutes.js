@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { sequelize, Sequelize } = require('../db'); // Assuming you have sequelize setup here
+const { sequelize, Sequelize } = require('../db'); // Sequelize setup
 
 module.exports = () => {
   // POST route for creating a booking

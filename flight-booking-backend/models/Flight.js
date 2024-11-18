@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize');
 const { sequelize, Sequelize } = require('../db'); // Import the Sequelize instance
 
+// Define the Flight model
 const Flight = sequelize.define('Flight', {
   name: {
     type: DataTypes.STRING,

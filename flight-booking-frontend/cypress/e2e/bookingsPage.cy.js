@@ -8,7 +8,7 @@ describe('My Bookings Page', () => {
       // Click the "Cancel Booking" button for the first booking
       cy.get("[data-cy='cancelflight_button']").first().click();
   
-      // Assert that the success SweetAlert message appears
+      // Confirm that the success SweetAlert message appears
       cy.get('.swal2-title').should('have.text', 'Booking Canceled');
       cy.get('.swal2-confirm').click();
 

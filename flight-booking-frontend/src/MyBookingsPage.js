@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-// Define the base URL for API requests
+// Base URL for API requests
 const url = 'http://localhost:3001/';
 
 const MyBookingsPage = () => {
