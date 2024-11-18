@@ -3,8 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const flightRoutes = require('./routes/flightroutes');
 const bookingRoutes = require('./routes/bookingRoutes');
-const { sequelize, Sequelize } = require('./db'); // Sequelize import
-const seedFlights = require('./seedFlights'); // Import seedFlights
+const { sequelize, Sequelize } = require('./config/db'); // Sequelize import
+const seedFlights = require('./seeds/seedFlights'); // Import seedFlights
 
 const app = express();
 const PORT = 3001;
@@ -14,8 +14,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/flights', flightRoutes());
-app.use('/api/bookings', bookingRoutes());
+app.use('/api/flights', flightRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

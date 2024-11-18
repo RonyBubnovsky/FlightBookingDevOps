@@ -1,6 +1,6 @@
-const { sequelize } = require('./db'); // Import database connection
-const Flight = require('./models/Flight'); // Import Flight model
-const Booking = require('./models/Booking'); // Import Booking model
+const { sequelize } = require('../config/db'); // Import database connection
+const Flight = require('../models/Flight'); // Import Flight model
+const Booking = require('../models/Booking'); // Import Booking model
 
 const seedFlights = async () => {
   try {

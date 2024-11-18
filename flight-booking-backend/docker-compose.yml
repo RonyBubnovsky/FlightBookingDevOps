@@ -1,3 +1,4 @@
+
 services:
   postgres:
     image: postgres:15-alpine
@@ -14,11 +15,10 @@ services:
       start_period: 10s
       timeout: 2s
 
-  # Backend Service (Express + Sequelize)
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: .           # Use the root directory as the context for the build
+      dockerfile: Dockerfile   # Dockerfile is at the root
     ports:
       - "3001:3001"
     environment:
@@ -27,11 +27,10 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - .:/usr/src/app
+      - .:/usr/src/app         # Mount the entire project directory (including src) to /usr/src/app
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 10s
-
