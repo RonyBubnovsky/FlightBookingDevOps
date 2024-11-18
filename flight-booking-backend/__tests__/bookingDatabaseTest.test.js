@@ -1,26 +1,10 @@
-const request = require('supertest');
-const app = require('../index'); // path to Express app
-const { sequelize, Sequelize } = require('../localdb'); // Sequelize instance
-const Booking = require('../models/Booking'); // Your Booking model
 
+const Booking = require('../models/Booking'); // Import the Booking model
 
 jest.setTimeout(10000); // Default timeout 10 seconds
 
-// Set up the PostgreSQL connection to localhost
-beforeAll(async () => {
-  // Initialize Sequelize with connection to local Postgres
-  await sequelize.authenticate(); // Test the connection
-  console.log('PostgreSQL connected');
-});
-
-// Tear down the connection after the tests
-afterAll(async () => {
-  await sequelize.close(); // Close the connection
-  console.log('PostgreSQL connection closed');
-});
-
 describe('Booking API', () => {
-  it('should add and then delete a booking successfully using raw SQL', async () => {
+  it('should add and then delete a booking successfully using the Booking model', async () => {
     // Define the mock booking data
     const newBooking = {
       bookedName: 'Mock Flight',
@@ -29,48 +13,21 @@ describe('Booking API', () => {
       bookedPrice: 300,
     };
 
-    // Step 1: Add the mock booking to the database using raw SQL
-    await sequelize.query(
-      'INSERT INTO "bookings" ("bookedName", "bookedDeparture", "bookedDestination", "bookedPrice") VALUES (:bookedName, :bookedDeparture, :bookedDestination, :bookedPrice)',
-      {
-        replacements: newBooking,
-        type: sequelize.QueryTypes.INSERT,
-      }
-    );
+    // Step 1: Add the mock booking to the database using the Booking model
+    const booking = await Booking.create(newBooking);
 
-    // Step 2: Verify the booking was added to the database using raw SQL
-    const [booking] = await sequelize.query(
-      'SELECT * FROM "bookings" WHERE "bookedName" = :bookedName',
-      {
-        replacements: { bookedName: newBooking.bookedName },
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
+    // Step 2: Verify the booking was added to the database
     expect(booking).toBeTruthy();
     expect(booking.bookedName).toBe(newBooking.bookedName);
     expect(booking.bookedDeparture).toBe(newBooking.bookedDeparture);
     expect(booking.bookedDestination).toBe(newBooking.bookedDestination);
     expect(booking.bookedPrice).toBe(newBooking.bookedPrice);
 
-    // Step 3: Delete the booking using raw SQL
-    await sequelize.query(
-      'DELETE FROM "bookings" WHERE "bookedName" = :bookedName',
-      {
-        replacements: { bookedName: newBooking.bookedName },
-        type: sequelize.QueryTypes.DELETE,
-      }
-    );
+    // Step 3: Delete the booking using the Booking model
+    await Booking.destroy({ where: { bookedName: newBooking.bookedName } });
 
-    // Step 4: Verify the booking was deleted using raw SQL
-    const [deletedBooking] = await sequelize.query(
-      'SELECT * FROM "bookings" WHERE "bookedName" = :bookedName',
-      {
-        replacements: { bookedName: newBooking.bookedName },
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
-
-    expect(deletedBooking).toBeUndefined(); // It should be undefined after deletion
+    // Step 4: Verify the booking was deleted using the Booking model
+    const deletedBooking = await Booking.findOne({ where: { bookedName: newBooking.bookedName } });
+    expect(deletedBooking).toBeNull(); // It should be null after deletion
   });
 });

@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest --forceExit",
-    "docker_build": "docker compose up --build"
+    "docker_build": "docker compose up --build",
+    "test-docker": "DB_HOST=postgres jest --runInBand --passWithNoTests"
   },
   "dependencies": {
     "cors": "^2.8.5",
