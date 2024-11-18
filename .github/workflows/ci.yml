@@ -63,8 +63,6 @@ jobs:
         run: |
           docker-compose down || true
           docker-compose up -d --build
-          chmod +x ./wait-for-it.sh
-          ./wait-for-it.sh localhost 3001
 
       # Step 9: Install frontend dependencies
       - name: Install frontend dependencies
