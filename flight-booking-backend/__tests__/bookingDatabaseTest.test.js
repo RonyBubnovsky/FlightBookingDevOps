@@ -3,6 +3,7 @@ const Booking = require('../models/Booking'); // Import the Booking model
 
 jest.setTimeout(10000); // Default timeout 10 seconds
 
+
 describe('Booking API', () => {
   it('should add and then delete a booking successfully using the Booking model', async () => {
     // Define the mock booking data

@@ -36,19 +36,3 @@ services:
       retries: 3
       start_period: 10s
 
-  # Jest Testing Service
-  test:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      DATABASE_URL: postgres://myuser:mysecurepassword@postgres:5432/flightbooking
-      NODE_ENV: test
-    depends_on:
-      postgres:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
-    volumes:
-      - .:/usr/src/app
-    command: npm run test-docker
