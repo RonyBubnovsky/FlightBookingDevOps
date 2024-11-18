@@ -8,7 +8,7 @@ This project is a Flight Booking App that allows users to search for flights, bo
 - **Booking**: Users can book available flights, and booked flights will be removed from the available flights list.
 - **My Bookings**: Users can view all of their booked flights, with the ability to cancel bookings.
 - **Docker Integration**: Both the backend (Node.js) and PostgreSQL are containerized using Docker, and the backend uses Docker Compose for management.
-- **Automated Testing**: End-to-end testing using Cypress, integrated into the CI/CD pipeline
+- **Automated Testing**: End-to-end testing using Cypress, integrated into the CI pipeline
 
 ## Tech Stack
 
@@ -16,12 +16,27 @@ This project is a Flight Booking App that allows users to search for flights, bo
 - **Backend**: Node.js, Express
 - **Database**: PostgreSQL (in Docker container)
 - **Testing**: Frontend - Cypress, Backend - Jest
-- **DevOps Concepts**: Docker, Docker Compose, CI/CD
+- **DevOps Concepts**: Docker, Docker Compose, CI Pipeline, Automated Testing
 
 ## Requirements
 
 - Docker Desktop (running and open)
 - Node.js (for running the frontend locally)
+
+## Important Prerequisites
+
+⚠️ **Before starting the project:**
+1. Ensure any local PostgreSQL instance is stopped as it might conflict with the Docker container:
+   - On Windows: Stop the PostgreSQL service in Services
+   - On Linux: `sudo service postgresql stop`
+   - On macOS: `brew services stop postgresql`
+2. Make sure port 5432 is free:
+   - You can check for processes using this port:
+     - On Windows: `netstat -ano | findstr 5432`
+     - On Linux/macOS: `lsof -i :5432`
+   - Kill any process using port 5432 if necessary:
+     - On Windows: `taskkill /PID <PID> /F`
+     - On Linux/macOS: `kill -9 <PID>`
 
 ## Installation
 
@@ -34,7 +49,7 @@ cd FlightBookingDevOps
 
 ### 2. Install frontend dependencies
 
-First, install the dependencies the frontend.
+First, install the dependencies for the frontend.
 
 **Frontend (React)**
 Navigate to the frontend directory and run:
@@ -94,7 +109,7 @@ Make sure Docker Desktop is running when you start the backend, as it uses Docke
 ### Docker
 
 - The backend and PostgreSQL are both containerized using Docker. This ensures a consistent environment across different stages of development and production.
-- Docker Compose is used to manage the services (backend and PostgeSQL) in a single command.
+- Docker Compose is used to manage the services (backend and PostgreSQL) in a single command.
 
 ### Testing
 
@@ -106,7 +121,7 @@ Make sure Docker Desktop is running when you start the backend, as it uses Docke
   - Error handling
 - Tests are automatically run as part of the CI pipeline
 
-### CI/CD
+### CI
 
 The project is integrated with Continuous Integration (CI) pipeline. This ensures that any code changes automatically trigger:
 
@@ -124,6 +139,29 @@ The CI pipeline helps maintain code quality by:
 
 The main branch is protected - changes must be made through pull requests that pass CI checks.
 
+## Troubleshooting
+
+### Common Issues
+
+1. **Port 5432 Already in Use**
+   - Follow the steps in the Prerequisites section to stop PostgreSQL and free up port 5432
+   - If the issue persists, you may need to check for other applications using this port
+
+2. **Docker Container Failed to Start**
+   - Ensure Docker Desktop is running
+   - Check Docker logs using `docker logs <container_name>`
+   - Try removing existing containers and images:
+     ```bash
+     docker-compose down
+     docker system prune -a
+     ```
+
+3. **Database Connection Issues**
+   - Verify PostgreSQL container is running: `docker ps`
+   - Check container logs: `docker logs <postgres_container_name>`
+   - Ensure environment variables in docker-compose.yml are correct
+
 ## Contributing
 
 Feel free to fork this project and create pull requests. Contributions are welcome!
+
