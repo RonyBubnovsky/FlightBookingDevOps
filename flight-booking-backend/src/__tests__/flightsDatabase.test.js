@@ -1,8 +1,19 @@
 const Flight = require('../models/Flight'); // Import the Flight model
+const { sequelize, Sequelize } = require('../config/db');
 
 jest.setTimeout(10000); // Default timeout 10 seconds
 
 describe('Flights API', () => {
+  // Sync the database before all tests
+  beforeAll(async () => {
+    await sequelize.sync();
+  });
+
+  // Close the database connection after all tests
+  afterAll(async () => {
+    await sequelize.close();
+  });
+
   it('should add and then delete a flight successfully using the Flight model', async () => {
     // Define the mock flight data
     const newFlight = {

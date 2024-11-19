@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest --forceExit",
+    "test": "jest",
     "docker_build": "docker compose up --build",
     "test-docker": "DB_HOST=postgres jest --runInBand --passWithNoTests"
   },
