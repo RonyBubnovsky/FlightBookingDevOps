@@ -21,22 +21,160 @@ This project is a Flight Booking App that allows users to search for flights, bo
 ## Requirements
 
 - Docker Desktop (running and open)
-- Node.js (for running the frontend locally)
+- Node.js
 
-## Important Prerequisites
+## Installing Requirements
 
-⚠️ **Before starting the project:**
-1. Ensure any local PostgreSQL instance is stopped as it might conflict with the Docker container:
-   - On Windows: Stop the PostgreSQL service in Services
-   - On Linux: `sudo service postgresql stop`
-   - On macOS: `brew services stop postgresql`
-2. Make sure port 5432 is free:
-   - You can check for processes using this port:
-     - On Windows: `netstat -ano | findstr 5432`
-     - On Linux/macOS: `lsof -i :5432`
-   - Kill any process using port 5432 if necessary:
-     - On Windows: `taskkill /PID <PID> /F`
-     - On Linux/macOS: `kill -9 <PID>`
+### Docker Desktop Installation
+
+#### Windows:
+1. **Download Docker Desktop**
+   - Go to the official Docker website: https://www.docker.com/products/docker-desktop
+   - Click "Download for Windows"
+   - Choose the appropriate version (Intel or Apple Silicon)
+
+2. **Installation Steps**
+   - Run the downloaded installer
+   - Follow the installation wizard
+   - Choose "Use recommended settings" during installation
+   - Restart your computer when prompted
+
+3. **Post-Installation**
+   - Open Docker Desktop
+   - Allow it to make changes to your system
+   - Wait for Docker to initialize
+   - Verify installation by opening a command prompt and running:
+     ```bash
+     docker --version
+     docker-compose --version
+     ```
+
+#### macOS:
+1. **Download Docker Desktop**
+   - Visit https://www.docker.com/products/docker-desktop
+   - Click "Download for Mac"
+   - Choose the version for Intel Chip or Apple Silicon (M1/M2)
+
+2. **Installation Steps**
+   - Open the downloaded .dmg file
+   - Drag Docker to the Applications folder
+   - Launch Docker from Applications
+   - Approve system permissions when prompted
+
+3. **Post-Installation**
+   - Open Terminal
+   - Run verification commands:
+     ```bash
+     docker --version
+     docker-compose --version
+     ```
+
+#### Linux (Ubuntu/Debian):
+1. **Update Package Index**
+   ```bash
+   sudo apt-get update
+   ```
+
+2. **Install Prerequisites**
+   ```bash
+   sudo apt-get install ca-certificates curl gnupg
+   ```
+
+3. **Add Docker's Official GPG Key**
+   ```bash
+   sudo install -m 0755 -d /etc/apt/keyrings
+   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+   sudo chmod a+r /etc/apt/keyrings/docker.gpg
+   ```
+
+4. **Set Up Repository**
+   ```bash
+   echo \
+     "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+     "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+   ```
+
+5. **Install Docker Desktop**
+   ```bash
+   sudo apt-get update
+   sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+   ```
+
+### Node.js Installation
+
+#### Windows:
+1. **Download Node.js**
+   - Visit https://nodejs.org/
+   - Download the LTS (Long Term Support) version
+   - Run the installer
+   - Check "Automatically install the necessary tools" during installation
+   - Restart your computer after installation
+
+2. **Verify Installation**
+   - Open Command Prompt
+   - Run:
+     ```bash
+     node --version
+     npm --version
+     ```
+
+#### macOS:
+1. **Using Homebrew (Recommended)**
+   ```bash
+   # Install Homebrew if not already installed
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   
+   # Install Node.js
+   brew install node
+   ```
+
+2. **Direct Download**
+   - Visit https://nodejs.org/
+   - Download the LTS version
+   - Open the .pkg file
+   - Follow installation wizard
+
+3. **Verify Installation**
+   ```bash
+   node --version
+   npm --version
+   ```
+
+#### Linux (Ubuntu/Debian):
+1. **Using Node Version Manager (NVM)**
+   ```bash
+   # Install NVM
+   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+   
+   # Reload shell
+   source ~/.bashrc
+   
+   # Install latest LTS Node.js version
+   nvm install --lts
+   ```
+
+2. **Using Package Manager**
+   ```bash
+   sudo apt-get update
+   sudo apt-get install nodejs npm
+   ```
+
+3. **Verify Installation**
+   ```bash
+   node --version
+   npm --version
+   ```
+
+### Troubleshooting
+
+- If you encounter permission issues, try running commands with `sudo`
+- For Docker, ensure your user is in the docker group:
+  ```bash
+  sudo usermod -aG docker $USER
+  ```
+- Restart your terminal or computer after installations
+- Check official documentation for the most up-to-date installation instructions
 
 ## Installation
 
@@ -143,11 +281,7 @@ The main branch is protected - changes must be made through pull requests that p
 
 ### Common Issues
 
-1. **Port 5432 Already in Use**
-   - Follow the steps in the Prerequisites section to stop PostgreSQL and free up port 5432
-   - If the issue persists, you may need to check for other applications using this port
-
-2. **Docker Container Failed to Start**
+1. **Docker Container Failed to Start**
    - Ensure Docker Desktop is running
    - Check Docker logs using `docker logs <container_name>`
    - Try removing existing containers and images:
@@ -156,7 +290,7 @@ The main branch is protected - changes must be made through pull requests that p
      docker system prune -a
      ```
 
-3. **Database Connection Issues**
+2. **Database Connection Issues**
    - Verify PostgreSQL container is running: `docker ps`
    - Check container logs: `docker logs <postgres_container_name>`
    - Ensure environment variables in docker-compose.yml are correct
@@ -164,4 +298,3 @@ The main branch is protected - changes must be made through pull requests that p
 ## Contributing
 
 Feel free to fork this project and create pull requests. Contributions are welcome!
-
