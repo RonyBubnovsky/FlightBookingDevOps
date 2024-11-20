@@ -17,8 +17,8 @@ services:
 
   backend:
     build:
-      context: .           # Use the root directory as the context for the build
-      dockerfile: Dockerfile   # Dockerfile is at the root
+      context: .           
+      dockerfile: Dockerfile   
     ports:
       - "3001:3001"
     environment:
@@ -27,7 +27,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - .:/usr/src/app         # Mount the entire project directory (including src) to /usr/src/app
+      - .:/usr/src/app         
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
       interval: 10s
