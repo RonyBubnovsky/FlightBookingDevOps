@@ -1,5 +1,23 @@
 # Flight Booking App with DevOps Integration
 
+## Table of Contents
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Requirements](#requirements)
+- [Installing Requirements](#installing-requirements)
+  - [Docker Desktop Installation](#docker-desktop-installation)
+  - [Node.js Installation](#nodejs-installation)
+- [Running the Project](#running-the-project)
+- [Accessing the Application](#access-the-application)
+- [Testing](#running-tests)
+- [Stopping the Project](#stopping-the-project)
+- [DevOps Features](#devops-features)
+  - [Docker](#docker)
+  - [Testing](#testing)
+  - [Continuous Integration](#ci)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+
 This project is a Flight Booking App that allows users to search for flights, book flights, and manage their bookings. It features the integration of DevOps concepts such as Docker containers and CI, providing a smooth development process.
 
 ## Features
@@ -176,7 +194,7 @@ This project is a Flight Booking App that allows users to search for flights, bo
 - Restart your terminal or computer after installations
 - Check official documentation for the most up-to-date installation instructions
 
-## Installation
+## Running the Project
 
 ### 1. Clone the repository
 
@@ -190,9 +208,10 @@ cd FlightBookingDevOps
 First, install the dependencies for the frontend.
 
 **Frontend (React)**
-Navigate to the frontend directory and run:
+Navigate to the flight-booking-frontend directory and run:
 
 ```bash
+cd flight-booking-frontend
 npm install
 ```
 
@@ -201,18 +220,20 @@ npm install
 Before starting the backend, make sure Docker Desktop is open and running.
 
 **Backend**
-To start the backend using Docker, run the following command inside the backend directory:
+Navigate to the flight-booking-backend directory and start the backend using Docker:
 
 ```bash
+cd ../flight-booking-backend
 docker-compose up --build
 ```
 
 This will build and start both the backend and PostgreSQL containers. Docker Compose ensures that the PostgreSQL container and the backend are linked and run correctly.
 
 **Frontend**
-After the backend is up and running, navigate to the frontend directory and run:
+After the backend is up and running, navigate back to the frontend directory and start the React development server:
 
 ```bash
+cd ../flight-booking-frontend
 npm start
 ```
 
@@ -225,9 +246,10 @@ This will start the React development server, and your app will be accessible at
 
 ### 5. Running Tests
 
-To run the Cypress tests locally, navigate to the frontend directory and run:
+Navigate to the flight-booking-frontend directory and run Cypress tests:
 
 ```bash
+cd flight-booking-frontend
 npx cypress open
 ```
 
