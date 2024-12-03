@@ -27,7 +27,8 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - .:/usr/src/app         
+      - .:/usr/src/app
+      - /usr/src/app/node_modules         
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
       interval: 10s
