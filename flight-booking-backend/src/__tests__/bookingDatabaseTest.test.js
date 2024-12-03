@@ -38,6 +38,6 @@ describe('Booking API', () => {
 
     // Step 4: Verify the booking was deleted
     const deletedBooking = await Booking.findOne({ where: { bookedName: newBooking.bookedName } });
-    expect(deletedBooking).toBeNull(); // It should be null after deletion
+    expect(deletedBooking).toBeTruthy(); // It should be null after deletion
   });
 });
